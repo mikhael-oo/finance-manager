@@ -36,8 +36,20 @@ router.get('/', async (req, res) => {
   
   // POST route to create a new user
   router.post('/register', async (req, res) => {
+    var _fname = req.body.fname;
+    console.log(_fname);
+    var _lname = req.body.lname;
+    console.log(_lname);
+    var _email = req.body.email;
+    console.log(_email);
+    var _user = req.body.username;
+    console.log(_user);
+    var _pass = req.body.password;
+    console.log(_pass);
+
     try {
-      const user = await User.create(req.body);
+      const user = await User.create(_fname, _lname, _email, _user, _pass);
+      console.log(user);
       res.json(user);
     } catch (error) {
       console.error(error);
