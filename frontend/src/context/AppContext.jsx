@@ -2,18 +2,26 @@ import {React, createContext, useReducer} from "react";
 
 const initialState = {
     expenses: [],
-    total: 0
+    total: 0,
+    budget: 0,
+    // remaining: 0
 }
 
 export const AppReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_EXPENSE':
-            console.log("ADD_EXPENSE")
-            console.log(action.payload)
             return {
                 ...state,
                 expenses: [action.payload, ...state.expenses],
-                total: state.total + action.payload.amount
+                total: state.total + action.payload.amount,
+                // remaining: state.remaining - action.payload.amount
+            }
+        case 'ADD_BUDGET':
+            console.log(action.payload.budget)
+            return {
+                ...state,
+                budget: action.payload.budget,
+                // remaining: action.payload.budget
             }
         default:
             return state;
@@ -30,6 +38,8 @@ export const AppProvider = (props) => {
             value={{
                 expenses: state.expenses,
                 total: state.total,
+                budget: state.budget,
+                // remaining: state.remaining,
                 dispatch,
             }}
             >
