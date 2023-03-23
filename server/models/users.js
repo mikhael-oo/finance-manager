@@ -5,7 +5,7 @@ const pool = new Pool({
     database: "postgres",
     user: "postgres",
     password: "testing",
-    port: 8080
+    port: 5432
 });
 
 async function createTable() {
@@ -15,9 +15,12 @@ async function createTable() {
       await client.query(`
         CREATE TABLE IF NOT EXISTS users (
           id SERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
-          email TEXT NOT NULL UNIQUE,
-          password TEXT NOT NULL
+          first_name VARCHAR(50) NOT NULL,
+          last_name VARVHAR(50) NOT NULL,
+          username VARCVHAR(50) UNIQUE NOT NULL,
+          email VARVHAR(100) NOT NULL UNIQUE,
+          password TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT NOW()
         )
       `);
       console.log('Users table created successfully');
@@ -33,7 +36,7 @@ class User {
       const client = await pool.connect();
       try {
         const result = await client.query('SELECT * FROM users');
-        return result.rows;
+        return result;
       } catch (err) {
         console.error("Getting everything from user table threw this error "+ err);
       } finally {
@@ -57,8 +60,8 @@ class User {
       const client = await pool.connect();
       try {
         const result = await client.query(
-          'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
-          [user.name, user.email, user.password]
+          'INSERT INTO users (first_name, last_name, username, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+          [user.first_name, user.last_name, user.username, user.email, user.password]
         );
         return result.rows[0];
         } catch (err) {
@@ -72,8 +75,8 @@ class User {
       const client = await pool.connect();
       try {
         const result = await client.query(
-          'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *',
-          [user.name, user.email, user.password, id]
+          'UPDATE users SET first_name = $1, last_name = $2, username = $3, email = $4, password = $5 WHERE id = $6 RETURNING *',
+          [user.first_name, user.last_name, user.username, user.email, user.password, id]
         );
         return result.rows[0];
         } catch (err) {

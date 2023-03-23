@@ -6,10 +6,13 @@ const router = express.Router();
 // Create users table
 createTable();
 
-router.get('/users', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
       const users = await User.getAll();
       res.json(users);
+      if (!users) {
+        res.status(404).json({ message: 'No users found' });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -17,7 +20,7 @@ router.get('/users', async (req, res) => {
   });
   
   // GET route to retrieve a single user by ID
-  router.get('/users/:id', async (req, res) => {
+  router.get('/:id', async (req, res) => {
     try {
       const user = await User.getById(req.params.id);
       if (user) {
@@ -32,7 +35,7 @@ router.get('/users', async (req, res) => {
   });
   
   // POST route to create a new user
-  router.post('/users', async (req, res) => {
+  router.post('/', async (req, res) => {
     try {
       const user = await User.create(req.body);
       res.json(user);
@@ -43,7 +46,7 @@ router.get('/users', async (req, res) => {
   });
   
   // PUT route to update an existing user by ID
-  router.put('/users/:id', async (req, res) => {
+  router.put('/:id', async (req, res) => {
     try {
       const user = await User.update(req.params.id, req.body);
       if (user) {
@@ -58,7 +61,7 @@ router.get('/users', async (req, res) => {
   });
   
   // DELETE route to delete an existing user by ID
-  router.delete('/users/:id', async (req, res) => {
+  router.delete('/:id', async (req, res) => {
     try {
       const user = await User.delete(req.params.id);
       if (user) {
