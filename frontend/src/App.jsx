@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import './App.css';
 import Login from "./components/login/Login"
 import SignUp from "./components/signup/SignUp"
@@ -10,6 +10,7 @@ import { Home } from './components/pages/Home'
 import Layout from './components/pages/Layout'
 import { Planning } from './components/pages/Planning'
 import { AppProvider } from './context/AppContext'
+import {React, useState } from 'react';
 
 function App() {
 

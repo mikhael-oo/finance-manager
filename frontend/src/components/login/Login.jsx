@@ -6,6 +6,7 @@ function Login(props) {
     
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
+    const navigate = useNavigate();
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -16,6 +17,7 @@ function Login(props) {
           });
           alert('User logged in successfully');
           console.log(response.data.user);
+          navigate(`http://localhost:3000/api/user/:'${user}'`);
         } catch (err) {
           console.error(err);
           alert('Error loggin in user');
@@ -52,6 +54,8 @@ function Login(props) {
                     />     
                 <input type="submit" />
             </form>
+
+            {/* <button className="link-btn" onClick={() => navigate('/SignUp')}>Don't Have an Account? Register Here</button> */}
 
             <button className="link-btn" onClick={ () => props.onFormSwitch('SignUp')}>Don't Have an Account? Register Here</button>
 
