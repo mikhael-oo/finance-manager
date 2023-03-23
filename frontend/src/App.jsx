@@ -1,7 +1,8 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import './App.css';
 import Login from "./components/login/Login"
 import SignUp from "./components/signup/SignUp"
+import {React, useState } from 'react';
 
 function App() {
 
@@ -22,3 +23,20 @@ function App() {
 }
 
 export default App;
+
+
+
+// import { Routes, Route } from 'react-router-dom';
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <Routes>
+//         <Route path="/" element={<Login />} />
+//         <Route path="/SignUp" element={<SignUp />} />
+//       </Routes>
+//     </div>
+//   );
+// }
+
+// export default App;
