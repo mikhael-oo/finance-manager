@@ -13,15 +13,15 @@ async function createTable() {
     try {
      
       await client.query(`
-        CREATE TABLE IF NOT EXISTS users (
-          id SERIAL PRIMARY KEY,
-          first_name VARCHAR(50) NOT NULL,
-          last_name VARVHAR(50) NOT NULL,
-          username VARCVHAR(50) UNIQUE NOT NULL,
-          email VARVHAR(100) NOT NULL UNIQUE,
-          password TEXT NOT NULL,
-          created_at TIMESTAMP DEFAULT NOW()
-        )
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        username VARCHAR(50) UNIQUE NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        password VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW()
+      )
       `);
       console.log('Users table created successfully');
     } catch (error) {
@@ -60,8 +60,8 @@ class User {
       const client = await pool.connect();
       try {
         const result = await client.query(
-          'INSERT INTO users (first_name, last_name, username, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-          [user.first_name, user.last_name, user.username, user.email, user.password]
+          'INSERT INTO users (first_name, last_name, username, email, password, created_at) VALUES ($1, $2, $3, $4, $5, `NOW()`) RETURNING *', 
+          [user.fname, user.lname, user.email, user.username, user.password]
         );
         return result.rows[0];
         } catch (err) {
