@@ -2,11 +2,17 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
     host: "34.68.249.54",
-    database: "postgres",
+    database: "users",
     user: "postgres",
     password: "testing",
     port: 5432
 });
+
+pool.connect();
+
+pool.query('SELECT * FROM users')
+  .then(res => console.log(res.rows))
+  .catch(err => console.error(err));
 
 async function createTable() {
     const client = await pool.connect();
@@ -56,12 +62,12 @@ class User {
       }
     }
   
-    static async create(user) {
+    static async create(fname, lname, email, username, password) {
+      //console.log(user);
       const client = await pool.connect();
       try {
         const result = await client.query(
-          'INSERT INTO users (first_name, last_name, username, email, password, created_at) VALUES ($1, $2, $3, $4, $5, `NOW()`) RETURNING *', 
-          [user.fname, user.lname, user.email, user.username, user.password]
+          `INSERT INTO users(first_name, last_name, username, email, password) VALUES ('${fname}', '${lname}', '${email}', '${username}', '${password}');`
         );
         return result.rows[0];
         } catch (err) {
