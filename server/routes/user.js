@@ -56,6 +56,23 @@ router.get('/', async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   });
+
+  // POST route to Login a new user
+  router.post('/login', async (req, res) => {
+    var _user = req.body.username;
+    console.log(_user);
+    var _pass = req.body.password;
+    console.log(_pass);
+
+    try {
+      const user = await User.login(_user, _pass);
+      console.log(user);
+      res.send('Login Successful.')
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
   
   // PUT route to update an existing user by ID
   router.put('/:id', async (req, res) => {

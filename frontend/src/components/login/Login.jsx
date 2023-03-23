@@ -1,25 +1,34 @@
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login(props) {
     
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
     
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        alert("submitted")
-        console.log(user)
-        console.log(pass)
-    }
+        try {
+          const response = await axios.post('http://localhost:3000/api/user/login', {
+            username: user,
+            password: pass
+          });
+          alert('User logged in successfully');
+          console.log(response.data.user);
+        } catch (err) {
+          console.error(err);
+          alert('Error loggin in user');
+        }
+      };
 
-    const onSuccess = (res) => {
-        console.log("LOGIN SUCCESSFUL!!! USER: ", res.profileObj);
-    }
+    // const onSuccess = (res) => {
+    //     console.log("LOGIN SUCCESSFUL!!! USER: ", res.profileObj);
+    // }
 
-    const onFailure = (res) => {
-        console.log("LOGIN UNSUCCESSFUL!!! res: ", res);
-    }
+    // const onFailure = (res) => {
+    //     console.log("LOGIN UNSUCCESSFUL!!! res: ", res);
+    // }
 
     return(
         <div className="auth-form-container">

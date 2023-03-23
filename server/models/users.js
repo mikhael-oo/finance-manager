@@ -5,7 +5,7 @@ const pool = new Pool({
     database: "users",
     user: "postgres",
     password: "testing",
-    port: 5432
+    //port: 5432
 });
 
 pool.connect();
@@ -68,6 +68,21 @@ class User {
       try {
         const result = await client.query(
           `INSERT INTO users(first_name, last_name, username, email, password) VALUES ('${fname}', '${lname}', '${email}', '${username}', '${password}');`
+        );
+        return result.rows[0];
+        } catch (err) {
+        console.error(err);
+      } finally {
+        client.release();
+      }
+    }
+
+    static async login(username, password) {
+      //console.log(user);
+      const client = await pool.connect();
+      try {
+        const result = await client.query(
+          `select * from users where username='${username}' and password='${password}';`
         );
         return result.rows[0];
         } catch (err) {
