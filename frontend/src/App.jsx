@@ -21,31 +21,26 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <AppProvider>
-        <BrowserRouter>
-        <Routes>
-          <Route index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
-          <Route path='/home' element={<Layout />}>
-            <Route index element={<Home />} />
-          </Route>
-          <Route path='/expense' element={<Layout />}>
-            <Route index element={<Expense />} />
-          </Route>
-          <Route path='/bill' element={<Layout />}>
-            <Route index element={<Bill />} />
-          </Route>
-          <Route path='/planning' element={<Layout />}>
-            <Route index element={<Planning />} />
-          </Route>
-          <Route path='/account' element={<Layout />}>
-            <Route index element={<Account />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      </AppProvider>
+    <AppProvider>
+      <BrowserRouter>
       
-    </div>
+        <div className="App flex">
+          <Layout />
+          <main>
+            <Routes>
+              <Route index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/expense" element={<Expense />} />
+              <Route path="/bill" element={<Bill />} />
+              <Route path="/planning" element={<Planning />} />
+              <Route path="/account" element={<Account />} />
+            </Routes>
+          </main>
+
+        </div>
+      </BrowserRouter>
+    </AppProvider>
+    
   );
 }
 
