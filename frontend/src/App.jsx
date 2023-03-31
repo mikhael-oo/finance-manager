@@ -1,5 +1,4 @@
 // import { useState } from 'react';
-import './App.css';
 import Login from "./components/login/Login"
 import SignUp from "./components/signup/SignUp"
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -26,7 +25,7 @@ function App() {
       
         <div className="App flex">
           <Layout />
-          <main>
+          <main className='p-7'>
             <Routes>
               <Route index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
               <Route path="/home" element={<Home />} />
@@ -40,7 +39,6 @@ function App() {
         </div>
       </BrowserRouter>
     </AppProvider>
-    
   );
 }
 
