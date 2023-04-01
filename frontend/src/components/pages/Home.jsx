@@ -4,6 +4,7 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
+import { Chart } from "react-google-charts"
 
 
 
@@ -27,7 +28,17 @@ export const Home = () => {
                                 <h3>Total Savings</h3>
                                 <h1>Insert api call to savings number</h1>
                             </div>
-                            <div className="savings-chart">Insert chart of savings vs. debt here</div>
+                            <div className="savings-chart">
+                                {/* Insert chart of savings vs. debt here */}
+                                <Chart
+                                    chartType="BarChart"
+                                    data={[["Type", "Amount"], ["Savings", 60], ["Debt", 40]]}
+                                    options={{title: "Savings vs. Debt",
+                                                legend: { position: "none"}}}
+                                    width={"50%"}
+                                    height={"200px"}
+                                />
+                            </div>
                         </div>
                     </div>
                     {/* -----------------------------END OF SAVINGS------------------------------------------- */}
@@ -39,7 +50,18 @@ export const Home = () => {
                                 <h3>Total Expenses</h3>
                                 <h1>Insert api call to expeneses number</h1>
                             </div>
-                            <div className="expenses-chart">Insert chart of debt vs last month here</div>
+                            <div className="expenses-chart">
+                                {/* Insert chart of debt vs last month here */}
+                                <Chart
+                                    chartType="BarChart"
+                                    data={[["Type", "Amount"], ["Current", 20], ["Last Month", 50]]}
+                                    options={{title: "Debt vs. Last Month's debt",
+                                                legend: { position: "none"}}}
+                                    width={"50%"}
+                                    height={"200px"}
+                                    
+                                />
+                            </div>
                         </div>
                     </div>
                     {/* -----------------------------END OF EXPENSES------------------------------------------- */}
@@ -51,7 +73,18 @@ export const Home = () => {
                                 <h3>Total Budget for month</h3>
                                 <h1>Insert api call to budget number</h1>
                             </div>
-                            <div className="debt-chart">Insert chart of bugdet to see how far off from cap it is</div>
+                            <div className="debt-chart">
+                                {/* Insert chart of bugdet to see how far off from cap it is */}
+                                <Chart
+                                    chartType="Gauge"
+                                    data={[["Label", "Value"], ["Current", 50]]}
+                                    options={{title: "How far from budget cap",
+                                                width: 500, height: 250,
+                                                greenFrom: 0, greenTo: 75, 
+                                                redFrom: 90, redTo: 100, 
+                                                yellowFrom: 75, yellowTo: 90}}
+                                />
+                            </div>
                         </div>
                     </div>
                     {/* -----------------------------END OF Budget------------------------------------------- */}
