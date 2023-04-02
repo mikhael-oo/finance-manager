@@ -23,7 +23,8 @@ const AddBudget = (props) => {
             entertainment: parseFloat(newEntertainment),
             saving: parseFloat(newSaving),
             miscellaneous: parseFloat(newMiscellaneous),
-            date: (new Date()).getTime()
+            date: (new Date()).getTime(),
+            month: (new Date()).getMonth()
         };
 
         dispatch({

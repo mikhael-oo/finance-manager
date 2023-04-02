@@ -35,7 +35,8 @@ const AddExpense = (props) => {
             amount: parseFloat(amount),
             // description: description,
             category: category,
-            date: (new Date()).getTime()
+            date: (new Date()).getTime(),
+            month: (new Date()).getMonth()
         };
 
         dispatch({
