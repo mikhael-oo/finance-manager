@@ -17,7 +17,6 @@ pool.query('SELECT * FROM expenses')
 async function createTable() {
     const client = await pool.connect();
     try {
-     
       await client.query(`
       CREATE TABLE IF NOT EXISTS expenses (
         id SERIAL PRIMARY KEY,

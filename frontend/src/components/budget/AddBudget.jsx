@@ -1,5 +1,6 @@
 import {React, useContext, useState} from "react";
 import { AppContext } from '../../context/AppContext'
+import axios from 'axios';
 
 const AddBudget = (props) => {
     const {dispatch} = useContext(AppContext);
@@ -12,7 +13,7 @@ const AddBudget = (props) => {
     const [newSaving, setSaving] = useState('');
     const [newMiscellaneous, setMiscellaneous] = useState('');
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
 
         const budget = {
@@ -31,6 +32,27 @@ const AddBudget = (props) => {
             type: 'ADD_BUDGET',
             payload: budget,
         });
+
+        try {
+            const response = await axios.post('http://localhost:3000/api/budget/addbudget', {
+                user_id: 1,
+                housing: parseFloat(newHousing),
+                utilities: parseFloat(newUtilities),
+                transportation: parseFloat(newTransportation),
+                food: parseFloat(newFood),
+                entertainment: parseFloat(newEntertainment),
+                saving: parseFloat(newSaving),
+                miscellaneous: parseFloat(newMiscellaneous),
+                date: (new Date()).getTime(),
+                month: (new Date()).getMonth()
+            });
+            alert('Budget added successfully');
+            console.log(response.data);
+        } catch (err) {
+            console.error(err);
+            alert('Error adding budget');
+        }
+        
 
         setHousing('');
         setUtilities('');

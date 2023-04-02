@@ -31,7 +31,7 @@ export const Home = () => {
                             <div className="savings-chart">
                                 {/* Insert chart of savings vs. debt here */}
                                 <Chart
-                                    chartType="BarChart"
+                                    chartType="ColumnChart"
                                     data={[["Type", "Amount"], ["Savings", 60], ["Debt", 40]]}
                                     options={{title: "Savings vs. Debt",
                                                 legend: { position: "none"}}}
@@ -53,7 +53,7 @@ export const Home = () => {
                             <div className="expenses-chart">
                                 {/* Insert chart of debt vs last month here */}
                                 <Chart
-                                    chartType="BarChart"
+                                    chartType="ColumnChart"
                                     data={[["Type", "Amount"], ["Current", 20], ["Last Month", 50]]}
                                     options={{title: "Debt vs. Last Month's debt",
                                                 legend: { position: "none"}}}

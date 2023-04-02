@@ -17,7 +17,7 @@ pool.query('SELECT * FROM users')
 async function createTable() {
     const client = await pool.connect();
     try {
-     
+
       await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -92,20 +92,44 @@ class User {
       }
     }
   
+    // static async update(id, user) {
+    //   const client = await pool.connect();
+    //   try {
+    //     const result = await client.query(
+    //       'UPDATE users SET first_name = $1, last_name = $2, username = $3, email = $4, password = $5 WHERE id = $6 RETURNING *',
+    //       [user.first_name, user.last_name, user.username, user.email, user.password, id]
+    //     );
+    //     return result.rows[0];
+    //     } catch (err) {
+    //     console.error(err);
+    //   } finally {
+    //     client.release();
+    //   }
+    // }
+
     static async update(id, user) {
       const client = await pool.connect();
       try {
-        const result = await client.query(
-          'UPDATE users SET first_name = $1, last_name = $2, username = $3, email = $4, password = $5 WHERE id = $6 RETURNING *',
-          [user.first_name, user.last_name, user.username, user.email, user.password, id]
-        );
+        const fields = [];
+        const values = [];
+        let index = 1;
+        for (const key in user) {
+          if (user[key] !== undefined) {
+            fields.push(`${key} = $${index}`);
+            values.push(user[key]);
+            index++;
+          }
+        }
+        const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${index} RETURNING *`;
+        const result = await client.query(query, [...values, id]);
         return result.rows[0];
-        } catch (err) {
+      } catch (err) {
         console.error(err);
       } finally {
         client.release();
       }
     }
+    
   
     static async delete(id) {
       const client = await pool.connect();

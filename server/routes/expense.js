@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     }
   });
 
-  // POST route to create a new note
+  // POST route to add a new expenese
   router.post('/addexpense', async (req, res) => {
     var _expenseName = req.body.name;
     console.log(_expenseName);

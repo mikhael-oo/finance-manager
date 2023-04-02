@@ -7,7 +7,7 @@ const AddExpense = (props) => {
 
     const [expenseName, setName] = useState('');
     const [amount, setAmount] = useState('');
-    // const [description, setDesc] = useState('');
+    const [description, setDesc] = useState('');
     const [category, setCat] = useState('');
 
     const onSubmit = async (e) => {
@@ -15,25 +15,25 @@ const AddExpense = (props) => {
 
         console.log(category);
 
-        // try {
-        //     const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
-        //         name: expenseName,
-        //         amount: amount,
-        //         // description: description,
-        //         category: category
-        //     });
-        //     alert('Expense adding successfully');
-        //     console.log(response.data.user);
-        //   } catch (err) {
-        //     console.error(err);
-        //     alert('Error adding exepense');
-        //   }
+        try {
+            const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
+                name: expenseName,
+                amount: amount,
+                description: description,
+                category: category
+            });
+            alert('Expense adding successfully');
+            console.log(response.data.user);
+        } catch (err) {
+            console.error(err);
+            alert('Error adding exepense');
+        }
 
         const expense = {
             // id: Math.floor(Math.random()*1000),
             name: expenseName,
             amount: parseFloat(amount),
-            // description: description,
+            description: description,
             category: category,
             date: (new Date()).getTime(),
             month: (new Date()).getMonth()
@@ -46,7 +46,7 @@ const AddExpense = (props) => {
 
         setName('');
         setAmount('');
-        // setDesc('');
+        setDesc('');
         setCat('');
 
     };
@@ -59,8 +59,8 @@ const AddExpense = (props) => {
             <label htmlFor='amount'>Amount</label>
             <input type='number' id='amount' value={amount} onChange={(e) => setAmount(e.target.value)} required/>
 
-            {/* <label htmlFor='description'>Description</label>
-            <input type='text' id='description' value={description} onChange={(e) => setDesc(e.target.value)} required/> */}
+            <label htmlFor='description'>Description</label>
+            <input type='text' id='description' value={description} onChange={(e) => setDesc(e.target.value)} required/>
 
             <label htmlFor='category'>Category</label>
             <select id='category' value={category} onChange={(e) => setCat(e.target.value)} required>
