@@ -7,32 +7,35 @@ const AddExpense = (props) => {
 
     const [expenseName, setName] = useState('');
     const [amount, setAmount] = useState('');
-    const [description, setDesc] = useState('');
+    // const [description, setDesc] = useState('');
     const [category, setCat] = useState('');
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
-                name: expenseName,
-                amount: amount,
-                description: description,
-                category: category
-            });
-            alert('Expense adding successfully');
-            console.log(response.data.user);
-          } catch (err) {
-            console.error(err);
-            alert('Error adding exepense');
-          }
+        console.log(category);
+
+        // try {
+        //     const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
+        //         name: expenseName,
+        //         amount: amount,
+        //         // description: description,
+        //         category: category
+        //     });
+        //     alert('Expense adding successfully');
+        //     console.log(response.data.user);
+        //   } catch (err) {
+        //     console.error(err);
+        //     alert('Error adding exepense');
+        //   }
 
         const expense = {
-            id: Math.floor(Math.random()*1000),
+            // id: Math.floor(Math.random()*1000),
             name: expenseName,
             amount: parseFloat(amount),
-            description: description,
-            category: category
+            // description: description,
+            category: category,
+            date: (new Date()).getTime()
         };
 
         dispatch({
@@ -42,7 +45,7 @@ const AddExpense = (props) => {
 
         setName('');
         setAmount('');
-        setDesc('');
+        // setDesc('');
         setCat('');
 
     };
@@ -50,16 +53,25 @@ const AddExpense = (props) => {
     return (
         <form onSubmit={onSubmit}>
             <label htmlFor='name'>Name</label>
-            <input type='text' id='name' value={expenseName} onChange={(e) => setName(e.target.value)}/>
+            <input type='text' id='name' value={expenseName} onChange={(e) => setName(e.target.value)} required/>
 
             <label htmlFor='amount'>Amount</label>
-            <input type='number' id='amount' value={amount} onChange={(e) => setAmount(e.target.value)}/>
+            <input type='number' id='amount' value={amount} onChange={(e) => setAmount(e.target.value)} required/>
 
-            <label htmlFor='description'>Description</label>
-            <input type='text' id='description' value={description} onChange={(e) => setDesc(e.target.value)}/>
+            {/* <label htmlFor='description'>Description</label>
+            <input type='text' id='description' value={description} onChange={(e) => setDesc(e.target.value)} required/> */}
 
             <label htmlFor='category'>Category</label>
-            <input type='text' id='category' value={category} onChange={(e) => setCat(e.target.value)}/>
+            <select id='category' value={category} onChange={(e) => setCat(e.target.value)} required>
+                <option value='category'>Select Category</option>
+                <option value='housing'>Housing</option>
+                <option value='utilities'>Utilities</option>
+                <option value='transportation'>Transportation</option>
+                <option value='food'>Food</option>
+                <option value='entertainment'>Entertainment</option>
+                <option value='saving'>Saving</option>
+                <option value='miscellaneous'>Miscellaneous</option>
+            </select>
             <button type='submit'>Add</button>
         </form>
     )

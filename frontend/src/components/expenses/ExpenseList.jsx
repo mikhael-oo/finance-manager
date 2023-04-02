@@ -1,5 +1,6 @@
 import {React, useContext} from "react";
-import ExpenseItem from "./ExpenseItem";
+import {format} from "date-fns"
+// import ExpenseItem from "./ExpenseItem";
 import { AppContext } from "../../context/AppContext";
 
 const ExpenseList = (props) => {
@@ -8,10 +9,27 @@ const ExpenseList = (props) => {
 
     return (
         <div>
-            <h3>Expense History</h3>
-            <ul>
-                {expenses.map((expense) => (<ExpenseItem key={expense.id} name={expense.name} amount={expense.amount} />))}
-            </ul>
+            <table>
+                <caption>Expenses</caption>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {expenses.map((expense) =>
+                        <tr key={expense.date}>
+                            <td>{expense.name}</td>
+                            <td>{expense.amount}</td>
+                            <td>{expense.category}</td>
+                            <td>{format((new Date(expense.date)),"dd/M/yyyy")}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         </div>
     )
 }

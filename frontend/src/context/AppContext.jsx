@@ -3,7 +3,7 @@ import {React, createContext, useReducer} from "react";
 const initialState = {
     expenses: [],
     total: 0,
-    budget: 0,
+    budget: [],
     // remaining: 0
 }
 
