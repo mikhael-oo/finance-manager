@@ -53,10 +53,10 @@ async function createTable() {
     static async getbyId(uid) {
       const client = await pool.connect();
       try {
-        const result = await client.query(`SELECT title, amount, category FROM expenses where user_id='${id}'`);
+        const result = await client.query(`SELECT title, amount, category FROM expenses where user_id='${uid}'`);
         return result;
       } catch (err) {
-        console.error("Getting everything from expenses table threw this error "+ err);
+        console.error("Getting by id from expenses table threw this error "+ err);
       } finally {
         client.release();
       }

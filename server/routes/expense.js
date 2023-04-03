@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     }
   });
 
-  router.get('/list', async (req, res) => {
+router.get('/list', async (req, res) => {
 
     var uid = parseInt(req.body.uid);
 if (isNaN(uid)) {
