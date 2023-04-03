@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import {BsArrowLeftShort} from "react-icons/bs";
-import {AiOutlineHome} from "react-icons/ai";
+import {AiOutlineHome, AiOutlineHistory} from "react-icons/ai";
 import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
 import {MdAttachMoney, MdAccountBalance, MdLogout} from "react-icons/md";
@@ -47,6 +47,14 @@ const Layout = () => {
                         </span>
                         <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
                             <Link to ="/planning">Finances</Link>
+                        </span>
+                    </li>
+                    <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
+                        <span className="text-2xl block float-left">
+                            <AiOutlineHistory />
+                        </span>
+                        <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
+                            <Link to ="/history">History</Link>
                         </span>
                     </li>
                     <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
