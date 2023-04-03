@@ -6,6 +6,7 @@ import { Account } from './components/pages/Account'
 import { Bill } from './components/pages/Bill'
 import { Expense } from './components/pages/Expense'
 import { Home } from './components/pages/Home'
+import History from "./components/history/History"
 import Layout from './components/pages/Layout'
 import { Planning } from './components/pages/Planning'
 import { AppProvider } from './context/AppContext'
@@ -37,6 +38,7 @@ function App() {
               <Route path="/bill" element={<Bill />} />
               <Route path="/planning" element={<Planning />} />
               <Route path="/account" element={<Account />} />
+              <Route path="./history" element={<History />} />
             </Routes>
           </main>
 
