@@ -18,27 +18,27 @@ router.get('/', async (req, res) => {
     }
   });
 
-  router.get('/list', async (req, res) => {
+router.get('/list', async (req, res) => {
 
     var uid = parseInt(req.body.uid);
-if (isNaN(uid)) {
-  console.log('NOT A NUMBER')
-} else {
-  console.log('Continue')
-}
+  if (isNaN(uid)) {
+    console.log('NOT A NUMBER')
+  } else {
+    console.log('Continue')
+  }
   
-      try {
-        const expense = await Expense.getbyId(uid);
-        if (!expense) {
-          res.status(404).json({ message: 'No expenses found' });
-        }else {
-          res.json(expense);
-        }
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+  try {
+    const expense = await Expense.getbyId(uid);
+    if (!expense) {
+      res.status(404).json({ message: 'No expenses found' });
+    }else {
+      res.json(expense);
       }
-    });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
 
   // POST route to add a new expenese
   router.post('/addexpense', async (req, res) => {
