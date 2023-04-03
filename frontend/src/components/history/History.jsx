@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserExpensesTable = () => {
+const UserExpensesTable = ({ userId }) => {
   const [expenses, setExpenses] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -10,7 +10,7 @@ const UserExpensesTable = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const response = await axios.get('/api/expenses');
+        const response = await axios.get('/api/expense/'+ userId);
         setExpenses(response.data);
       } catch (error) {
         console.log(error);

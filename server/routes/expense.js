@@ -40,6 +40,29 @@ router.get('/list', async (req, res) => {
   }
 });
 
+// alternative to above and used to fetch a user history of expenses
+router.get('/:id', async (req, res) => {
+
+  var uid = parseInt(req.params.id);
+  if (isNaN(uid)) {
+    console.log('NOT A NUMBER')
+  } else {
+    console.log('Continue')
+  }
+
+  try {
+    const expense = await Expense.getbyId(uid);
+    if (!expense) {
+      res.status(404).json({ message: 'No expenses found' });
+    }else {
+      res.json(expense);
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
   // POST route to add a new expenese
   router.post('/addexpense', async (req, res) => {
     var uid = req.body.uid;

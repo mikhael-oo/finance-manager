@@ -38,7 +38,7 @@ function App() {
               <Route path="/bill" element={<Bill />} />
               <Route path="/planning" element={<Planning />} />
               <Route path="/account" element={<Account />} />
-              <Route path="/history" element={<History />} />
+              <Route path="/history" element={<History userId={userId}/>} />
             </Routes>
           </main>
 
