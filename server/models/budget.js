@@ -28,8 +28,8 @@ async function createTable() {
         entertainment DECIMAL(10,2) NOT NULL,
         saving DECIMAL(10,2) NOT NULL,
         miscellaneous DECIMAL(10,2) NOT NULL,
-        date DATE NOT NULL,
-        month VARCHAR(10) NOT NULL,
+        date BIGINT NOT NULL,
+        month INTEGER NOT NULL,
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
     );
     `);

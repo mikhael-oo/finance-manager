@@ -10,19 +10,20 @@ function Login(props) {
     
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-          const response = await axios.post('http://localhost:3000/api/user/login', {
+    try {
+        const response = await axios.post('http://localhost:3000/api/user/login', {
             username: user,
             password: pass
-          });
-          alert('User logged in successfully');
-          console.log(response.data.user);
-          navigate(`http://localhost:3000/api/user/:'${user}'`);
+        });
+        alert('User logged in successfully');
+        console.log(response.data.user);
+        // navigate(`http://localhost:3000/api/user/:'${user}'`);
+        navigate(`/home`);
         } catch (err) {
-          console.error(err);
-          alert('Error loggin in user');
+        console.error(err);
+        alert('Error loggin in user');
         }
-      };
+    };
 
     // const onSuccess = (res) => {
     //     console.log("LOGIN SUCCESSFUL!!! USER: ", res.profileObj);

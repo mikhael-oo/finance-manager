@@ -22,10 +22,10 @@ async function createTable() {
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) NOT NULL,
         title VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
         category VARCHAR(50) NOT NULL,
         amount DECIMAL(10,2) NOT NULL,
-        date DATE NOT NULL,
+        date BIGINT NOT NULL,
+        month INTEGER NOT NULL,
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
       );
       `);
@@ -50,12 +50,12 @@ async function createTable() {
       }
     }
   
-    static async create(expenseName, amount, description, category) {
+    static async create(expenseName, amount, category, date, month) {
       //console.log(user);
       const client = await pool.connect();
       try {
         const result = await client.query(
-          `INSERT INTO expenses(user_id, title, description, category, amount, date) VALUES ( 1,'${expenseName}', '${description}','${category}', '${amount}', '2022-03-22');`
+          `INSERT INTO expenses(user_id, title, category, amount, date, month) VALUES ( 1,'${expenseName}', '${category}', '${amount}', '${date}', '${month}');`
         );
         return result.rows[0];
         } catch (err) {

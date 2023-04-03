@@ -43,8 +43,8 @@ const AddBudget = (props) => {
                 entertainment: parseFloat(newEntertainment),
                 saving: parseFloat(newSaving),
                 miscellaneous: parseFloat(newMiscellaneous),
-                date: '2022-03-22',
-                month: 'April'
+                date: (new Date()).getTime(),
+                month: (new Date()).getMonth()
             });
             alert('Budget added successfully');
             console.log(response.data);

@@ -23,13 +23,15 @@ router.get('/', async (req, res) => {
     console.log(_expenseName);
     var _amount = req.body.amount;
     console.log(_amount);
-    var _desc = req.body.description;
-    console.log(_desc);
     var _cat = req.body.category;
     console.log(_cat);
+    var _date = req.body.date;
+    console.log(_date);
+    var _month = req.body.month;
+    console.log(_month);
 
     try {
-      const expense = await Expense.create(_expenseName, _amount, _desc, _cat);
+      const expense = await Expense.create(_expenseName, _amount, _cat, _date, _month);
       console.log(expense);
       res.json(expense);
     } catch (error) {
