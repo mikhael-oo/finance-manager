@@ -5,7 +5,7 @@ const Budget = (props) => {
     const {budget} = useContext(AppContext);
 
     return (
-        <h3>Current Budget: {budget}</h3>
+        <h3>Current Budget:{budget}</h3>
     )
 }
 
