@@ -1,13 +1,16 @@
 import {React, useContext, useState} from 'react'
 import { AppContext } from '../../context/AppContext'
+import AuthContext from '../login/AuthContext';
 import axios from 'axios';
 
 const AddExpense = (props) => {
     const { dispatch } = useContext(AppContext);
+    const authContext = useContext(AuthContext);
 
     const [expenseName, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCat] = useState('');
+    
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -16,6 +19,7 @@ const AddExpense = (props) => {
 
         try {
             const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
+                uid: authContext.userId,
                 name: expenseName,
                 amount: amount,
                 category: category,

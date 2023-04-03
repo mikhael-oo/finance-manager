@@ -1,12 +1,14 @@
-import { React, useState } from 'react';
+import { React, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from './AuthContext';
 
 function Login(props) {
     
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
     const navigate = useNavigate();
+    const authContext = useContext(AuthContext);
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -16,22 +18,17 @@ function Login(props) {
             password: pass
         });
         alert('User logged in successfully');
-        console.log(response.data.user);
+        console.log(response.data.user.id);
         // navigate(`http://localhost:3000/api/user/:'${user}'`);
+        authContext.setUserId(response.data.user.id);
         navigate(`/home`);
         } catch (err) {
         console.error(err);
-        alert('Error loggin in user');
+        alert('Error logging in user');
         }
     };
 
-    // const onSuccess = (res) => {
-    //     console.log("LOGIN SUCCESSFUL!!! USER: ", res.profileObj);
-    // }
 
-    // const onFailure = (res) => {
-    //     console.log("LOGIN UNSUCCESSFUL!!! res: ", res);
-    // }
 
     return(
         <div className="auth-form-container">
@@ -65,3 +62,11 @@ function Login(props) {
 }
 
 export default Login;
+
+    // const onSuccess = (res) => {
+    //     console.log("LOGIN SUCCESSFUL!!! USER: ", res.profileObj);
+    // }
+
+    // const onFailure = (res) => {
+    //     console.log("LOGIN UNSUCCESSFUL!!! res: ", res);
+    // }

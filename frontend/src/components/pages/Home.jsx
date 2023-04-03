@@ -1,19 +1,26 @@
 //import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import { React, useState, useContext } from 'react';
 import SavingsIcon from '@mui/icons-material/Savings'
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
-import { Chart } from "react-google-charts"
+import { Chart } from "react-google-charts";
+import AuthContext from '../login/AuthContext';
+
 
 
 
 export const Home = () => {
+
+    const authContext = useContext(AuthContext);
+
     return (
         <div>
             <p className="text-2xl font-semibold">Home </p>
             <main>
                 <h1>Dashboard</h1>
+                <p>User ID: {authContext.userId}</p>
 
                 <div className="date">
                     <input type="date" />

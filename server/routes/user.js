@@ -66,8 +66,15 @@ router.get('/', async (req, res) => {
 
     try {
       const user = await User.login(_user, _pass);
-      console.log(user);
-      res.send('Login Successful.')
+      if (user) {
+        res.status(200).json({ user: { id: user.id } });
+      } else {
+        res.status(401).json({ message: 'Unauthorized' });
+      }
+      //console.log(user);
+      //res.send('Login Successful.')
+      //res.send(user.data)
+      //res.status(200).json({ user: { id: user.id } });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });

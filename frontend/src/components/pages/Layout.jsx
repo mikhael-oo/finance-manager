@@ -1,13 +1,15 @@
 import { Outlet, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {BsArrowLeftShort} from "react-icons/bs";
 import {AiOutlineHome} from "react-icons/ai";
 import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
-import {MdAttachMoney, MdAccountBalance} from "react-icons/md";
+import {MdAttachMoney, MdAccountBalance, MdLogout} from "react-icons/md";
+//import AuthContext from "../login/AuthContext";
 
 const Layout = () => {
     const [open, setOpen] = useState(true);
+    //const authContext = useContext(AuthContext);
     return (
         <>
             <nav className={`bg-dark-green h-screen p-5 pt-8 ${open ? "w-72" : "w-24"} duration-300 relative `}>
@@ -53,6 +55,14 @@ const Layout = () => {
                         </span>
                         <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
                             <Link to ="/account">Account</Link>
+                        </span>
+                    </li>
+                    <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
+                        <span className="text-2xl block float-left">
+                            <MdLogout />  
+                        </span>
+                        <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
+                            <Link to ="/" /*onClick={authContext.setUserId(null)}*/ >Sign Out</Link>
                         </span>
                     </li>
                 </ul>

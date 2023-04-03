@@ -10,10 +10,13 @@ import Layout from './components/pages/Layout'
 import { Planning } from './components/pages/Planning'
 import { AppProvider } from './context/AppContext'
 import {React, useState } from 'react';
+import { AuthContext } from './components/login/AuthContext';
+
 
 function App() {
 
   const [currentForm, setCurrentForm] = useState('Login')
+  const [userId, setUserId] = useState(null)
   
   const toggleForm = (formName) => {
     setCurrentForm(formName);
@@ -21,13 +24,14 @@ function App() {
 
   return (
     <AppProvider>
+      <AuthContext.Provider value={{ userId, setUserId }}>
       <BrowserRouter>
       
         <div className="App flex">
           <Layout />
           <main className='p-7'>
             <Routes>
-              <Route index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
+              <Route path="/" index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
               <Route path="/home" element={<Home />} />
               <Route path="/expense" element={<Expense />} />
               <Route path="/bill" element={<Bill />} />
@@ -38,6 +42,7 @@ function App() {
 
         </div>
       </BrowserRouter>
+      </AuthContext.Provider>
     </AppProvider>
   );
 }

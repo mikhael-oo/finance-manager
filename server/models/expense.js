@@ -41,7 +41,19 @@ async function createTable() {
     static async getAll() {
       const client = await pool.connect();
       try {
-        const result = await client.query('SELECT * FROM expenses');
+        const result = await client.query(`SELECT * FROM expenses`);
+        return result;
+      } catch (err) {
+        console.error("Getting everything from expenses table threw this error "+ err);
+      } finally {
+        client.release();
+      }
+    }
+
+    static async getbyId(uid) {
+      const client = await pool.connect();
+      try {
+        const result = await client.query(`SELECT title, amount, category FROM expenses where user_id='${id}'`);
         return result;
       } catch (err) {
         console.error("Getting everything from expenses table threw this error "+ err);
@@ -50,12 +62,12 @@ async function createTable() {
       }
     }
   
-    static async create(expenseName, amount, category, date, month) {
+    static async create(uid, expenseName, amount, category, date, month) {
       //console.log(user);
       const client = await pool.connect();
       try {
         const result = await client.query(
-          `INSERT INTO expenses(user_id, title, category, amount, date, month) VALUES ( 1,'${expenseName}', '${category}', '${amount}', '${date}', '${month}');`
+          `INSERT INTO expenses(user_id, title, category, amount, date, month) VALUES ( '${uid}','${expenseName}', '${category}', '${amount}', '${date}', '${month}');`
         );
         return result.rows[0];
         } catch (err) {

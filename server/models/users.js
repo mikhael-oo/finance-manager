@@ -82,7 +82,7 @@ class User {
       const client = await pool.connect();
       try {
         const result = await client.query(
-          `select * from users where username='${username}' and password='${password}';`
+          `select id from users where username='${username}' and password='${password}';`
         );
         return result.rows[0];
         } catch (err) {
