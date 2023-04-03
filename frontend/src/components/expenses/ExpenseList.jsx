@@ -12,9 +12,7 @@ const ExpenseList = () => {
     useEffect(() => {
     const fetchExpenses = async () => {
         try {
-        const response = await axios.get('http://localhost:3000/api/expense/list', {
-            uid: parseInt(authContext.userId, 10)
-        });
+        const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
         console.log(response.data)
         //setExpenses(response.data);
         } catch (error) {
