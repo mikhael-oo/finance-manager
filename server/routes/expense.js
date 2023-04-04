@@ -88,4 +88,18 @@ router.get('/:id', async (req, res) => {
     }
   });
 
+  router.delete('/deleteexpense/:uid/:id', async (req, res) => {
+    var uid = req.params.uid;
+    var id = req.params.id;
+
+    try {
+      const expense = await Expense.delete(uid, id);
+      res.json(expense);
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  })
+
   module.exports = router;

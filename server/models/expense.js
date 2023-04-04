@@ -53,7 +53,7 @@ async function createTable() {
     static async getbyId(uid) {
       const client = await pool.connect();
       try {
-        const result = await client.query(`SELECT title, amount, category FROM expenses where user_id='${uid}'`);
+        const result = await client.query(`SELECT title, category, amount, date, month FROM expenses where user_id='${uid}'`);
         return result;
       } catch (err) {
         console.error("Getting by id from expenses table threw this error "+ err);
@@ -73,6 +73,21 @@ async function createTable() {
         } catch (err) {
         console.error(err);
       } finally {
+        client.release();
+      }
+    }
+
+
+    static async delete(uid,id){
+      const client = await pool.connect();
+      try {
+        const result = await client.query(`DELETE FROM expenses WHERE user_id='${uid}' AND id='${id}';`);
+        return result;
+      }
+      catch (err){
+        console.log(err);
+      }
+      finally {
         client.release();
       }
     }
