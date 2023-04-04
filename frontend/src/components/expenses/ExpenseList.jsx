@@ -1,4 +1,4 @@
-import {React, useContext, useEffect} from "react";
+import {React, useContext, useEffect, useState} from "react";
 import {format} from "date-fns"
 //import ExpenseItem from "./ExpenseItem";
 import { AppContext } from "../../context/AppContext";
@@ -6,28 +6,45 @@ import axios from "axios";
 import AuthContext from "../login/AuthContext";
 
 const ExpenseList = () => {
-    const { expenses, setExpenses } = useContext(AppContext);
+    // const { expenses, setExpenses } = useContext(AppContext);
     const authContext = useContext(AuthContext);
 
-    useEffect(() => {
-    const fetchExpenses = async () => {
-        try {
-        const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
-        console.log(response.data)
-        //setExpenses(response.data);
-        } catch (error) {
-        console.error(error);
-        }
-    };
+    const [expenseList, setExpenseList] = useState([]);
 
-    fetchExpenses();
-    }, [authContext.userId, setExpenses]);
+    useEffect(() => {
+        const fetchExpenses = async () => {
+            try {
+            const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+            console.log(response.data)
+            var currMonth = new Date().getMonth();
+            var tempList = response.data;
+            tempList = tempList.filter(e => e.month === currMonth);
+            setExpenseList(tempList)
+            } catch (error) {
+            console.error(error);
+            }
+        };
+
+        fetchExpenses();
+    }, []);
+
+    const onDelete = async (id) => {
+        try {
+            const del = await axios.delete('http://localhost:3000/api/expense/deleteexpense/'+ authContext.userId + '/' + id);
+            var tempList = expenseList;
+            tempList = tempList.filter(e => e.id != id);
+            setExpenseList(tempList)
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
     <div>
         <table>
         <caption>Expenses</caption>
-        <p>User ID: {authContext.userId}</p>
+        {/* <p>User ID: {authContext.userId}</p> */}
         <thead>
             <tr>
             <th>Name</th>
@@ -37,12 +54,13 @@ const ExpenseList = () => {
             </tr>
         </thead>
         <tbody>
-            {expenses.map((expense) => (
+            {expenseList.map((expense) => (
             <tr key={expense.id}>
                 <td>{expense.name}</td>
                 <td>{expense.amount}</td>
                 <td>{expense.category}</td>
                 <td>{format(new Date(expense.date), "dd/M/yyyy")}</td>
+                <td><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
             </tr>
             ))}
         </tbody>
