@@ -6,9 +6,9 @@ export const Expense = () => {
     return (
         <div>
             <p>Expense</p>
-            <TotalSpent />
+            {/* <TotalSpent /> */}
             <AddExpense />
-            <ExpenseList />
+            {/* <ExpenseList /> */}
         </div>
     );
 };
