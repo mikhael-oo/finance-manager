@@ -4,9 +4,10 @@ const router = express.Router();
 
 createTable();
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
 try {
-    const budgets = await Budget.getAll();
+    var user_id = req.params.id
+    const budgets = await Budget.getByUser(user_id);
     res.json(budgets);
     if (!budgets) {
     res.status(404).json({ message: 'No budgets found' });
@@ -55,9 +56,9 @@ router.post('/addbudget', async (req, res) => {
 
 
 // PUT route to update an existing budget by user ID
-router.put('/:id', async (req, res) => {
+router.put('/:uid/:month', async (req, res) => {
     try {
-    const budget = await Budget.update(req.params.id, req.body);
+    const budget = await Budget.update(req.params.id, req.params.month, req.body);
     if (budget) {
         res.json(budget);
     } else {

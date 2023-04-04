@@ -63,7 +63,7 @@ class Budget {
     const client = await pool.connect();
     try {
         const result = await client.query('SELECT * FROM budget WHERE user_id = $1', [user_id]);
-        return result.rows[0];
+        return result.rows;
     } catch (err) {
         console.error('Error getting budget by user:', err);
     } finally {
@@ -72,7 +72,7 @@ class Budget {
     }
 
     //METHOD TO UPDATE PARTS OF A USERS BUDGET
-    static async update(user_id, updates) {
+    static async update(user_id, month, updates) {
         const client = await pool.connect();
         try {
         let query = 'UPDATE budget SET';
@@ -91,7 +91,7 @@ class Budget {
         query += ' WHERE user_id = $1 RETURNING *';
     
         const result = await client.query(query, values);
-        return result.rows[0];
+        return result.rows;
         } catch (err) {
         console.error('Error updating budget:', err);
         } finally {
