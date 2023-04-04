@@ -42,7 +42,7 @@ async function createTable() {
       const client = await pool.connect();
       try {
         const result = await client.query(`SELECT * FROM expenses`);
-        return result;
+        return result.rows;
       } catch (err) {
         console.error("Getting everything from expenses table threw this error "+ err);
       } finally {
@@ -54,7 +54,7 @@ async function createTable() {
       const client = await pool.connect();
       try {
         const result = await client.query(`SELECT id, title, category, amount, date, month FROM expenses where user_id='${uid}'`);
-        return result;
+        return result.rows;
       } catch (err) {
         console.error("Getting by id from expenses table threw this error "+ err);
       } finally {
