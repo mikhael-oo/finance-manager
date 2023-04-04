@@ -73,49 +73,54 @@ const handleSubmit = async (event) => {
 
 
    return(
-       <div className="auth-form-container">
-           <form className= "signup-form" onSubmit={handleSubmit}>
-               <label>First Name:</label>
+       <div className="flex justify-center items-center h-screen bg-gray-100">
+           <form className= " bg-white p-6 rounded-lg shadow-md w-96" onSubmit={handleSubmit}>
+               <label htmlFor="fname" className='block text-gray-700 font-bold mb-2'>First Name:</label>
                    <input
+                       className='border border-gray-400 p-2 w-full rounded focus:outline-none focus:border-blue-500'
                        name="fname"
                        type="text"
                        id="fname"
                        value={fname}
                        onChange={(e) => setFname(e.target.value)}
                    />
-                   <label>Last Name:</label>
+                   <label htmlFor='lname' className='block text-gray-700 font-bold mb-2'>Last Name:</label>
                    <input
+                       className='border border-gray-400 p-2 w-full rounded focus:outline-none focus:border-blue-500'
                        name="lname"
                        type="text"
                        id="lname"
                        value={lname}
                        onChange={(e) => setLname(e.target.value)}
                    />
-                   <label>Username:</label>
+                   <label htmlFor='username' className='block text-gray-700 font-bold mb-2'>Username:</label>
                    <input
+                       className='border border-gray-400 p-2 w-full rounded focus:outline-none focus:border-blue-500'
                        name="username"
                        type="text"
                        id="username"
                        value={user}
                        onChange={(e) => setUser(e.target.value)}
                    />
-               <label>Email:</label>
+                   <label htmlFor='email' className='block text-gray-700 font-bold mb-2'>Email:</label>
                    <input
+                       className='border border-gray-400 p-2 w-full rounded focus:outline-none focus:border-blue-500'
                        name="email"
                        type="email"
                        id="email"
                        value={email}
                        onChange={(e) => setEmail(e.target.value)}
                    />
-               <label>Password:</label>
+               <label htmlFor='password' className='block text-gray-700 font-bold mb-2'>Password:</label>
                    <input
+                        className='border border-gray-400 p-2 w-full rounded focus:outline-none focus:border-blue-500'
                        name="password"
                        type="password"
                        id="password"
                        value={pass}
                        onChange={(e) => setPass(e.target.value)}
                    />
-               <input type="submit" />
+               <input className="bg-dark-green hover:bg-light-green text-white font-bold py-2 px-4 rounded" type="submit" />
            </form>
            <button className="link-btn" onClick={ () => props.onFormSwitch('Login')}>Already Have an Account? Login Here</button>
        </div>
