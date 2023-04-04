@@ -8,12 +8,14 @@ import {CiMoneyBill} from "react-icons/ci";
 import { Chart } from "react-google-charts";
 import AuthContext from '../login/AuthContext';
 
-
-
-
 export const Home = () => {
 
     const authContext = useContext(AuthContext);
+
+    var expensesNumber = 0;
+    var lastMonthExpensesNumber = 0;
+    var savingsNumber = 0;
+    var budgetNumber = 0;
 
     return (
         <div>
@@ -32,18 +34,18 @@ export const Home = () => {
                     <SavingsIcon />
                         <div className="middle">
                             <div className="left">
-                                <h3>Total Savings</h3>
-                                <h1>Insert api call to savings number</h1>
+                                <h3>Total Savings: </h3>
+                                <h1>{savingsNumber}</h1>
                             </div>
                             <div className="savings-chart">
                                 {/* Insert chart of savings vs. debt here */}
                                 <Chart
                                     chartType="ColumnChart"
-                                    data={[["Type", "Amount"], ["Savings", 60], ["Debt", 40]]}
-                                    options={{title: "Savings vs. Debt",
+                                    data={[["Type", "Amount"], ["Savings", savingsNumber], ["Expenses", expensesNumber]]}
+                                    options={{title: "Savings vs. Expenses",
                                                 legend: { position: "none"}}}
-                                    width={"50%"}
-                                    height={"200px"}
+                                    width={"100%"}
+                                    height={"300px"}
                                 />
                             </div>
                         </div>
@@ -54,18 +56,18 @@ export const Home = () => {
                     <GiExpense />
                         <div className="middle">
                             <div className="left">
-                                <h3>Total Expenses</h3>
-                                <h1>Insert api call to expeneses number</h1>
+                                <h3>Total Expenses: </h3>
+                                <h1>{expensesNumber}</h1>
                             </div>
                             <div className="expenses-chart">
                                 {/* Insert chart of debt vs last month here */}
                                 <Chart
                                     chartType="ColumnChart"
-                                    data={[["Type", "Amount"], ["Current", 20], ["Last Month", 50]]}
-                                    options={{title: "Debt vs. Last Month's debt",
+                                    data={[["Type", "Amount"], ["Current month", expensesNumber], ["Last month", lastMonthExpensesNumber]]}
+                                    options={{title: "This months' expenses vs. Last month's expenses",
                                                 legend: { position: "none"}}}
-                                    width={"50%"}
-                                    height={"200px"}
+                                    width={"100%"}
+                                    height={"300px"}
                                     
                                 />
                             </div>
@@ -77,19 +79,18 @@ export const Home = () => {
                     <CiMoneyBill />
                         <div className="middle">
                             <div className="left">
-                                <h3>Total Budget for month</h3>
-                                <h1>Insert api call to budget number</h1>
+                                <h3>Total Budget for month: </h3>
+                                <h1>{budgetNumber}</h1>
                             </div>
                             <div className="debt-chart">
                                 {/* Insert chart of bugdet to see how far off from cap it is */}
                                 <Chart
                                     chartType="Gauge"
-                                    data={[["Label", "Value"], ["Current", 50]]}
-                                    options={{title: "How far from budget cap",
-                                                width: 500, height: 250,
-                                                greenFrom: 0, greenTo: 75, 
-                                                redFrom: 90, redTo: 100, 
-                                                yellowFrom: 75, yellowTo: 90}}
+                                    data={[["Label", "Value"], ["Current", expensesNumber]]}
+                                    options={{width: 300, height: 250,
+                                                greenFrom: 0, greenTo: (budgetNumber * 0.75),
+                                                yellowFrom: (budgetNumber * 0.75), yellowTo: (budgetNumber * 0.9), 
+                                                redFrom: (budgetNumber * 0.9), redTo: budgetNumber}}
                                 />
                             </div>
                         </div>

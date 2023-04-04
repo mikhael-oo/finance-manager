@@ -14,14 +14,14 @@ const ExpenseList = () => {
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
-            const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
-            console.log(response.data)
-            var currMonth = new Date().getMonth();
-            var tempList = response.data;
-            tempList = tempList.filter(e => e.month === currMonth);
-            setExpenseList(tempList)
+                const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+                console.log(response.data)
+                var currMonth = new Date().getMonth();
+                var tempList = response.data;
+                tempList = tempList.filter(e => e.month === currMonth);
+                setExpenseList(tempList)
             } catch (error) {
-            console.error(error);
+                console.error(error);
             }
         };
 
@@ -34,8 +34,7 @@ const ExpenseList = () => {
             var tempList = expenseList;
             tempList = tempList.filter(e => e.id != id);
             setExpenseList(tempList)
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     }
