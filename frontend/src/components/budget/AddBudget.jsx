@@ -1,9 +1,11 @@
-import {React, useContext, useState} from "react";
+import {React, useContext, useEffect, useState} from "react";
 import { AppContext } from '../../context/AppContext'
+import AuthContext from '../login/AuthContext';
 import axios from 'axios';
 
 const AddBudget = (props) => {
-    const {dispatch} = useContext(AppContext);
+    // const {dispatch} = useContext(AppContext);
+    const authContext = useContext(AuthContext);
 
     const [newHousing, setHousing] = useState('');
     const [newFood, setFood] = useState('');
@@ -13,54 +15,111 @@ const AddBudget = (props) => {
     const [newSaving, setSaving] = useState('');
     const [newMiscellaneous, setMiscellaneous] = useState('');
 
+    const [currentBudget, setCurrentBudget] = useState({});
+    const [budgetList, setBudgetList] = useState([]);
+    const [budgetExists, setBudgetExists] = useState(false);
+
+    useEffect(() => {
+        const fetchBudget = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
+                setBudgetList(response);
+                var currMonth = new Date().getMonth();
+                var currBudget = budgetList.find(b => b.month === currMonth);
+
+                if (currBudget !== undefined){
+                    setBudgetExists(true);
+                    setCurrentBudget(currBudget);
+                    setHousing(currBudget.housing.toString());
+                    setUtilities(currBudget.utilities.toString());
+                    setTransportation(currBudget.transportation.toString());
+                    setFood(currBudget.food.toString());
+                    setEntertainment(currBudget.entertainment.toString());
+                    setSaving(currBudget.saving.toString());
+                    setMiscellaneous(currBudget.miscellaneous.toString());
+                }
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        fetchBudget();
+    },[])
+
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        const budget = {
-            housing: parseFloat(newHousing),
-            utilities: parseFloat(newUtilities),
-            transportation: parseFloat(newTransportation),
-            food: parseFloat(newFood),
-            entertainment: parseFloat(newEntertainment),
-            saving: parseFloat(newSaving),
-            miscellaneous: parseFloat(newMiscellaneous),
-            date: (new Date()).getTime(),
-            month: (new Date()).getMonth()
-        };
+        // const budget = {
+        //     housing: parseFloat(newHousing),
+        //     utilities: parseFloat(newUtilities),
+        //     transportation: parseFloat(newTransportation),
+        //     food: parseFloat(newFood),
+        //     entertainment: parseFloat(newEntertainment),
+        //     saving: parseFloat(newSaving),
+        //     miscellaneous: parseFloat(newMiscellaneous),
+        //     date: (new Date()).getTime(),
+        //     month: (new Date()).getMonth()
+        // };
 
-        dispatch({
-            type: 'ADD_BUDGET',
-            payload: budget,
-        });
+        // dispatch({
+        //     type: 'ADD_BUDGET',
+        //     payload: budget,
+        // });
 
-        try {
-            const response = await axios.post('http://localhost:3000/api/budget/addbudget', {
-                user_id: 1,
-                housing: parseFloat(newHousing),
-                utilities: parseFloat(newUtilities),
-                transportation: parseFloat(newTransportation),
-                food: parseFloat(newFood),
-                entertainment: parseFloat(newEntertainment),
-                saving: parseFloat(newSaving),
-                miscellaneous: parseFloat(newMiscellaneous),
-                date: (new Date()).getTime(),
-                month: (new Date()).getMonth()
-            });
-            alert('Budget added successfully');
-            console.log(response.data);
-        } catch (err) {
-            console.error(err);
-            alert('Error adding budget');
+        if (budgetExists){
+            try {
+                const response = await axios.put('http://localhost:3000/api/budget/addbudget/' + authContext.userId + '/' + currentBudget.month, {
+                    user_id: authContext.userId,
+                    housing: parseFloat(newHousing),
+                    utilities: parseFloat(newUtilities),
+                    transportation: parseFloat(newTransportation),
+                    food: parseFloat(newFood),
+                    entertainment: parseFloat(newEntertainment),
+                    saving: parseFloat(newSaving),
+                    miscellaneous: parseFloat(newMiscellaneous),
+                    date: (new Date()).getTime(),
+                    month: (new Date()).getMonth()
+                });
+                alert('Budget added successfully');
+                console.log(response.data);
+            } catch (err) {
+                console.error(err);
+                alert('Error adding budget');
+            }
         }
+        else {
+            try {
+                const response = await axios.post('http://localhost:3000/api/budget/addbudget', {
+                    user_id: authContext.userId,
+                    housing: parseFloat(newHousing),
+                    utilities: parseFloat(newUtilities),
+                    transportation: parseFloat(newTransportation),
+                    food: parseFloat(newFood),
+                    entertainment: parseFloat(newEntertainment),
+                    saving: parseFloat(newSaving),
+                    miscellaneous: parseFloat(newMiscellaneous),
+                    date: (new Date()).getTime(),
+                    month: (new Date()).getMonth()
+                });
+                alert('Budget added successfully');
+                console.log(response.data);
+            } catch (err) {
+                console.error(err);
+                alert('Error adding budget');
+            }
+        }
+
+        
         
 
-        setHousing('');
-        setUtilities('');
-        setTransportation('');
-        setFood('');
-        setEntertainment('');
-        setSaving('');
-        setMiscellaneous('');
+        // setHousing('');
+        // setUtilities('');
+        // setTransportation('');
+        // setFood('');
+        // setEntertainment('');
+        // setSaving('');
+        // setMiscellaneous('');
     }
 
     return (
