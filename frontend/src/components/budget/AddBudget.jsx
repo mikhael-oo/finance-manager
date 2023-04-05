@@ -1,10 +1,9 @@
 import {React, useContext, useEffect, useState} from "react";
-import { AppContext } from '../../context/AppContext'
 import AuthContext from '../login/AuthContext';
 import axios from 'axios';
 
 const AddBudget = (props) => {
-    // const {dispatch} = useContext(AppContext);
+    
     const authContext = useContext(AuthContext);
 
     const [newHousing, setHousing] = useState('');
@@ -18,6 +17,10 @@ const AddBudget = (props) => {
     const [currentBudget, setCurrentBudget] = useState({});
     const [budgetList, setBudgetList] = useState([]);
     const [budgetExists, setBudgetExists] = useState(false);
+
+
+    //UPDATE POPUPS
+    const [showHousingPopup, setShowHousingPopup] = useState(false);
 
     useEffect(() => {
         const fetchBudget = async () => {
@@ -49,23 +52,6 @@ const AddBudget = (props) => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-
-        // const budget = {
-        //     housing: parseFloat(newHousing),
-        //     utilities: parseFloat(newUtilities),
-        //     transportation: parseFloat(newTransportation),
-        //     food: parseFloat(newFood),
-        //     entertainment: parseFloat(newEntertainment),
-        //     saving: parseFloat(newSaving),
-        //     miscellaneous: parseFloat(newMiscellaneous),
-        //     date: (new Date()).getTime(),
-        //     month: (new Date()).getMonth()
-        // };
-
-        // dispatch({
-        //     type: 'ADD_BUDGET',
-        //     payload: budget,
-        // });
 
         if (budgetExists){
             try {
@@ -112,35 +98,96 @@ const AddBudget = (props) => {
 
         
         
+    }
 
-        // setHousing('');
+    //UPDATE FUNCTIONS
+    const updateHousing = async (e) => {
+        e.preventDefault();
+        // Your logic to update the Housing value in the database goes here
+        setShowHousingPopup(false);
+    }
+
+    return (
+
+    <div>
+        <form onSubmit={onSubmit}>
+            <label>Housing</label>
+            <input type='number'
+                id='housing'
+                value={newHousing}
+                onChange={(e) => setHousing(e.target.value)}
+                />
+            <a onClick={() => setShowHousingPopup(true)}>UPDATE HOUSING</a>
+
+            <label>Utilities</label>
+            <input type='number' id='utilities' value={newUtilities} onChange={(e) => setUtilities(e.target.value)} />
+            <label>Transportation</label>
+            <input type='number' id='transportation' value={newTransportation} onChange={(e) => setTransportation(e.target.value)} />
+            <label>Food</label>
+            <input type='number' id='food' value={newFood} onChange={(e) => setFood(e.target.value)} />
+            <label>Entertainment</label>
+            <input type='number' id='entertainment' value={newEntertainment} onChange={(e) => setEntertainment(e.target.value)} />
+            <label>Saving</label>
+            <input type='number' id='saving' value={newSaving} onChange={(e) => setSaving(e.target.value)} />
+            <label>Miscellaneous</label>
+            <input type='number' id='miscellaneous' value={newMiscellaneous} onChange={(e) => setMiscellaneous(e.target.value)} />
+            <button type="submit">Set Budget</button>
+        </form>
+
+
+        <div className="popup">
+            <form onSubmit={updateHousing}>
+                <label>Housing</label>
+                <input
+                    type="number"
+                    id="housing"
+                    value={newHousing}
+                    onChange={(e) => setHousing(e.target.value)}
+                />
+                <button type="submit">Update Housing</button>
+                <button type="button" onClick={() => setShowHousingPopup(false)}>
+                    Cancel
+                </button>
+            </form>
+        </div>
+
+
+
+
+
+    </div>
+
+    
+    )
+}
+
+export default AddBudget;
+
+//import { AppContext } from '../../context/AppContext'
+
+// const {dispatch} = useContext(AppContext);
+
+        // const budget = {
+        //     housing: parseFloat(newHousing),
+        //     utilities: parseFloat(newUtilities),
+        //     transportation: parseFloat(newTransportation),
+        //     food: parseFloat(newFood),
+        //     entertainment: parseFloat(newEntertainment),
+        //     saving: parseFloat(newSaving),
+        //     miscellaneous: parseFloat(newMiscellaneous),
+        //     date: (new Date()).getTime(),
+        //     month: (new Date()).getMonth()
+        // };
+
+        // dispatch({
+        //     type: 'ADD_BUDGET',
+        //     payload: budget,
+        // });
+
+                // setHousing('');
         // setUtilities('');
         // setTransportation('');
         // setFood('');
         // setEntertainment('');
         // setSaving('');
         // setMiscellaneous('');
-    }
-
-    return (
-        <form onSubmit={onSubmit}>
-            <label>Housing</label>
-            <input type='number' id='housing' value={newHousing} onChange={(e) => setHousing(e.target.value)} required/>
-            <label>Utilities</label>
-            <input type='number' id='utilities' value={newUtilities} onChange={(e) => setUtilities(e.target.value)} required/>
-            <label>Transportation</label>
-            <input type='number' id='transportation' value={newTransportation} onChange={(e) => setTransportation(e.target.value)} required/>
-            <label>Food</label>
-            <input type='number' id='food' value={newFood} onChange={(e) => setFood(e.target.value)} required/>
-            <label>Entertainment</label>
-            <input type='number' id='entertainment' value={newEntertainment} onChange={(e) => setEntertainment(e.target.value)} required/>
-            <label>Saving</label>
-            <input type='number' id='saving' value={newSaving} onChange={(e) => setSaving(e.target.value)} required/>
-            <label>Miscellaneous</label>
-            <input type='number' id='miscellaneous' value={newMiscellaneous} onChange={(e) => setMiscellaneous(e.target.value)} required/>
-            <button type="submit">Set Budget</button>
-        </form>
-    )
-}
-
-export default AddBudget;

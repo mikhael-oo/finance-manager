@@ -1,10 +1,18 @@
 const { Pool } = require('pg');
 
+// const pool = new Pool({
+//     host: "34.68.249.54",
+//     database: "users",
+//     user: "postgres",
+//     password: "testing",
+//     //port: 5432
+// });
+
 const pool = new Pool({
-    host: "34.68.249.54",
-    database: "users",
+    host: "35.239.173.2",
+    database: "postgres",
     user: "postgres",
-    password: "testing",
+    password: "postgress",
     //port: 5432
 });
 
@@ -72,23 +80,52 @@ class Budget {
     }
 
     //METHOD TO UPDATE PARTS OF A USERS BUDGET
+    // static async update(user_id, month, updates) {
+    //     const client = await pool.connect();
+    //     try {
+    //     let query = 'UPDATE budget SET';
+    //     const values = [user_id];
+    
+    //     const keys = Object.keys(updates);
+    //     for (let i = 0; i < keys.length; i++) {
+    //         const key = keys[i];
+    //         query += ` ${key} = $${i + 2}`;
+    //         values.push(updates[key]);
+    //         if (i < keys.length - 1) {
+    //         query += ',';
+    //         }
+    //     }
+    
+    //     query += ' WHERE user_id = $1 RETURNING *';
+    
+    //     const result = await client.query(query, values);
+    //     return result.rows;
+    //     } catch (err) {
+    //     console.error('Error updating budget:', err);
+    //     } finally {
+    //     client.release();
+    //     }
+    // }
+
     static async update(user_id, month, updates) {
         const client = await pool.connect();
         try {
         let query = 'UPDATE budget SET';
-        const values = [user_id];
+        const values = [user_id, month];
     
         const keys = Object.keys(updates);
+        let counter = 3;
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
-            query += ` ${key} = $${i + 2}`;
+            if (updates[key]) { // only update if the form field is filled out
+            query += ` ${key} = $${counter},`;
             values.push(updates[key]);
-            if (i < keys.length - 1) {
-            query += ',';
+            counter++;
             }
         }
+          query = query.slice(0, -1); // remove trailing comma
     
-        query += ' WHERE user_id = $1 RETURNING *';
+          query += ' WHERE user_id = $1 AND month = $2 RETURNING *';
     
         const result = await client.query(query, values);
         return result.rows;
@@ -98,6 +135,7 @@ class Budget {
         client.release();
         }
     }
+
 }
 
 module.exports = {Budget, createTable};

@@ -56,9 +56,35 @@ router.post('/addbudget', async (req, res) => {
 
 
 // PUT route to update an existing budget by user ID
-router.put('/:uid/:month', async (req, res) => {
+// router.put('/addbudget/:uid/:month', async (req, res) => {
+//     try {
+//     const budget = await Budget.update(req.params.id, req.params.month, req.body);
+//     if (budget) {
+//         res.json(budget);
+//     } else {
+//         res.status(404).json({ message: 'Budget not found' });
+//     }
+//     } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Server error' });
+//     }
+// });
+
+
+router.put('/addbudget/:uid/:month', async (req, res) => {
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const updates = {};
+    const formFields = ['housing', 'utilities', 'transportation', 'food', 'entertainment', 'saving', 'miscellaneous'];
+
+    formFields.forEach(field => {
+    if (req.body[field] !== undefined && req.body[field] !== null) {
+        updates[field] = parseFloat(req.body[field]);
+    }
+    });
+
     try {
-    const budget = await Budget.update(req.params.id, req.params.month, req.body);
+    const budget = await Budget.update(userId, month, updates);
     if (budget) {
         res.json(budget);
     } else {
@@ -69,6 +95,7 @@ router.put('/:uid/:month', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 
 

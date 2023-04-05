@@ -28,37 +28,76 @@ function Login(props) {
         }
     };
 
-
-
-    return(
-        <div className="auth-form-container">
-            <form className="login-form" onSubmit={handleSubmit}>
-                <label>Username/email:</label>
+    return (
+        <div className="bg-grey-lighter min-h-screen flex flex-col">
+            <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+                <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+                    <h1 className="mb-8 text-3xl text-center">Login up</h1>
+                    <label>Username/email:</label>
                     <input
                         name="username"
+                        className="block border border-grey-light w-full p-3 rounded mb-4"
                         type="text"
                         id="username"
                         value={user}
-                        onChange={(e) => setUser(e.target.value)}
-                    />
+                        onChange={(e) => setUser(e.target.value)} />
                 
-                <label>Password:</label> 
+                    <label>Password:</label> 
                     <input
-                        name="password"
-                        type="password"
-                        id="password"
-                        value={pass}
-                        onChange={(e) => setPass(e.target.value)}
-                    />     
-                <input type="submit" />
-            </form>
-
-            {/* <button className="link-btn" onClick={() => navigate('/SignUp')}>Don't Have an Account? Register Here</button> */}
-
-            <button className="link-btn" onClick={ () => props.onFormSwitch('SignUp')}>Don't Have an Account? Register Here</button>
-
+                    name="password"
+                    className="block border border-grey-light w-full p-3 rounded mb-4"
+                    type="password"
+                    id="password"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                />     
+            <input
+                type="submit"
+                className="w-full text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1"
+                onClick={handleSubmit}
+                />
+                <div className="text-grey-dark mt-6">
+                    Don't have an account? 
+                    <a className="no-underline border-b border-blue text-blue" onClick={ () => props.onFormSwitch('SignUp')}>
+                        Register Here
+                    </a>.
+                </div>
+            </div>
         </div>
+    </div>
     )
+
+
+
+    // return(
+    //     <div className="auth-form-container">
+    //         <form className="login-form" onSubmit={handleSubmit}>
+    //             <label>Username/email:</label>
+    //                 <input
+    //                     name="username"
+    //                     type="text"
+    //                     id="username"
+    //                     value={user}
+    //                     onChange={(e) => setUser(e.target.value)}
+    //                 />
+                
+    //             <label>Password:</label> 
+    //                 <input
+    //                     name="password"
+    //                     type="password"
+    //                     id="password"
+    //                     value={pass}
+    //                     onChange={(e) => setPass(e.target.value)}
+    //                 />     
+    //             <input type="submit" />
+    //         </form>
+
+    //         {/* <button className="link-btn" onClick={() => navigate('/SignUp')}>Don't Have an Account? Register Here</button> */}
+
+    //         <button className="link-btn" onClick={ () => props.onFormSwitch('SignUp')}>Don't Have an Account? Register Here</button>
+
+    //     </div>
+    // )
 }
 
 export default Login;
