@@ -107,26 +107,14 @@ class Budget {
     //     }
     // }
 
-    static async update(user_id, month, updates) {
+
+
+    static async update(user_id, month, amount, attribute) {
         const client = await pool.connect();
         try {
-        let query = 'UPDATE budget SET';
+        let query = 'UPDATE budget SET ' + attribute + ' = ' + amount + ' WHERE user_id = $1 AND month = $2 RETURNING *';
+        console.log(query);
         const values = [user_id, month];
-    
-        const keys = Object.keys(updates);
-        let counter = 3;
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            if (updates[key]) { // only update if the form field is filled out
-            query += ` ${key} = $${counter},`;
-            values.push(updates[key]);
-            counter++;
-            }
-        }
-          query = query.slice(0, -1); // remove trailing comma
-    
-          query += ' WHERE user_id = $1 AND month = $2 RETURNING *';
-    
         const result = await client.query(query, values);
         return result.rows;
         } catch (err) {
@@ -135,6 +123,43 @@ class Budget {
         client.release();
         }
     }
+
+
+
+
+
+
+
+
+
+    // static async update(user_id, month, updates) {
+    //     const client = await pool.connect();
+    //     try {
+    //     let query = 'UPDATE budget SET';
+    //     const values = [user_id, month];
+    
+    //     const keys = Object.keys(updates);
+    //     let counter = 3;
+    //     for (let i = 0; i < keys.length; i++) {
+    //         const key = keys[i];
+    //         if (updates[key]) { // only update if the form field is filled out
+    //         query += ` ${key} = $${counter},`;
+    //         values.push(updates[key]);
+    //         counter++;
+    //         }
+    //     }
+    //       query = query.slice(0, -1); // remove trailing comma
+    
+    //       query += ' WHERE user_id = $1 AND month = $2 RETURNING *';
+    
+    //     const result = await client.query(query, values);
+    //     return result.rows;
+    //     } catch (err) {
+    //     console.error('Error updating budget:', err);
+    //     } finally {
+    //     client.release();
+    //     }
+    // }
 
 }
 

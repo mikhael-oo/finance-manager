@@ -71,20 +71,154 @@ router.post('/addbudget', async (req, res) => {
 // });
 
 
-router.put('/addbudget/:uid/:month', async (req, res) => {
+// router.put('/addbudget/:uid/:month', async (req, res) => {
+//     const userId = req.params.uid;
+//     const month = req.params.month;
+//     const updates = {};
+//     const formFields = ['housing', 'utilities', 'transportation', 'food', 'entertainment', 'saving', 'miscellaneous'];
+
+//     formFields.forEach(field => {
+//     if (req.body[field] !== undefined && req.body[field] !== null) {
+//         updates[field] = parseFloat(req.body[field]);
+//     }
+//     });
+
+//     try {
+//     const budget = await Budget.update(userId, month, updates);
+//     if (budget) {
+//         res.json(budget);
+//     } else {
+//         res.status(404).json({ message: 'Budget not found' });
+//     }
+//     } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Server error' });
+//     }
+// });
+
+
+router.put('/updatehousing/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'housing'
     const userId = req.params.uid;
     const month = req.params.month;
-    const updates = {};
-    const formFields = ['housing', 'utilities', 'transportation', 'food', 'entertainment', 'saving', 'miscellaneous'];
-
-    formFields.forEach(field => {
-    if (req.body[field] !== undefined && req.body[field] !== null) {
-        updates[field] = parseFloat(req.body[field]);
-    }
-    });
+    const amount = req.params.amount;
 
     try {
-    const budget = await Budget.update(userId, month, updates);
+    const budget = await Budget.update(userId, month, amount, attribute);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updateutl/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'utilities'
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const amount = req.params.amount;
+
+    try {
+    const budget = await Budget.update(userId, month, amount, attribute);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updatetrans/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'transportation'
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const amount = req.params.amount;
+
+    try {
+    const budget = await Budget.update(userId, month, amount, attribute);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updatefood/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'food'
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const amount = req.params.amount;
+
+    try {
+    const budget = await Budget.update(userId, month, amount, attribute);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updateent/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'entertainment'
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const amount = req.params.amount;
+
+    try {
+    const budget = await Budget.update(userId, month, amount, attribute);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updatesav/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'saving'
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const amount = req.params.amount;
+
+    try {
+    const budget = await Budget.update(userId, month, amount, attribute);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updatemisc/:uid/:month/:amount', async (req, res) => {
+    const attribute = 'miscellaneous'
+    const userId = req.params.uid;
+    const month = req.params.month;
+    const amount = req.params.amount;
+
+    try {
+    const budget = await Budget.update(userId, month, amount, attribute);
     if (budget) {
         res.json(budget);
     } else {
