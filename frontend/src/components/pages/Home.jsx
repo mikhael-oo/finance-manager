@@ -7,6 +7,9 @@ import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
 import { Chart } from "react-google-charts";
 import AuthContext from '../login/AuthContext';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 export const Home = () => {
 
@@ -17,6 +20,40 @@ export const Home = () => {
     var savingsNumber = 0;
     var budgetNumber = 0;
 
+    async function updateCharts(date) {
+        var currMonth = date.getMonth();
+        try {
+            const expensesResponse = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+            var expensesList = expensesResponse.data;
+            var currExpensesList = expensesList.filter(e => e.month === currMonth);
+            var prevExpensesList = expensesList.filter(e => e.month === (currMonth - 1));
+
+            for (let i = 0; i < currExpensesList.length; i++) {
+                expensesNumber += currExpensesList[i].amount;
+            }
+
+            for (let i = 0; i < prevExpensesList.length; i++) {
+                lastMonthExpensesNumber += prevExpensesList[i].amount;
+            }
+
+            const budgetResponse = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
+            var budgetList = budgetResponse.data;
+            budgetList = budgetList.filter(e => e.month === currMonth);
+            for (let i = 0; i < budgetList.length; i++) {
+                budgetNumber += budgetList[i].housing;
+                budgetNumber += budgetList[i].utilities;
+                budgetNumber += budgetList[i].transportation;
+                budgetNumber += budgetList[i].food;
+                budgetNumber += budgetList[i].entertainment;
+                budgetNumber += budgetList[i].saving;
+                budgetNumber += budgetList[i].miscellaneous;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const [startDate, setStartDate] = useState(new Date());
     return (
         <div>
             <p className="text-2xl font-semibold">Home </p>
@@ -25,7 +62,7 @@ export const Home = () => {
                 <p>User ID: {authContext.userId}</p>
 
                 <div className="date">
-                    <input type="date" />
+                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} onSelect={updateCharts(startDate)}/>
                 </div>
 
                 <div className="insights">
@@ -86,11 +123,11 @@ export const Home = () => {
                                 {/* Insert chart of bugdet to see how far off from cap it is */}
                                 <Chart
                                     chartType="Gauge"
-                                    data={[["Label", "Value"], ["Current", expensesNumber]]}
+                                    data={[["Label", "Value"], ["Current", (expensesNumber/budgetNumber)*100]]}
                                     options={{width: 300, height: 250,
-                                                greenFrom: 0, greenTo: (budgetNumber * 0.75),
-                                                yellowFrom: (budgetNumber * 0.75), yellowTo: (budgetNumber * 0.9), 
-                                                redFrom: (budgetNumber * 0.9), redTo: budgetNumber}}
+                                                greenFrom: 0, greenTo: 75,
+                                                yellowFrom: 75, yellowTo: 90, 
+                                                redFrom: 90, redTo: 100}}
                                 />
                             </div>
                         </div>
