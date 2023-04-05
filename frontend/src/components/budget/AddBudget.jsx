@@ -15,7 +15,7 @@ import axios from 'axios';
     const [newMiscellaneous, setMiscellaneous] = useState('');
 
     const [currentBudget, setCurrentBudget] = useState({});
-    const [budgetList, setBudgetList] = useState([]);
+    const [budgetTotal, setBudgetTotal] = useState(0.00);
     const [budgetExists, setBudgetExists] = useState(false);
 
 
@@ -30,32 +30,43 @@ import axios from 'axios';
 
     const month = new Date().getMonth();
 
+    const fetchBudget = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
+            // const response = await axios.get('http://localhost:3000/api/budget/'+ 1);
+            // console.log(response)
+            // setBudgetList(response);
 
-    useEffect(() => {
-        const fetchBudget = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
-                setBudgetList(response);
-                var currMonth = new Date().getMonth();
-                var currBudget = budgetList.find(b => b.month === currMonth);
+            var tempList = []
+            tempList = Array.from(response.data)
 
-                if (currBudget !== undefined){
-                    setBudgetExists(true);
-                    setCurrentBudget(currBudget);
-                    setHousing(currBudget.housing.toString());
-                    setUtilities(currBudget.utilities.toString());
-                    setTransportation(currBudget.transportation.toString());
-                    setFood(currBudget.food.toString());
-                    setEntertainment(currBudget.entertainment.toString());
-                    setSaving(currBudget.saving.toString());
-                    setMiscellaneous(currBudget.miscellaneous.toString());
-                }
-            }
-            catch (err) {
-                console.log(err)
+            var currMonth = new Date().getMonth();
+            var currBudget = tempList.find(b => b.month === currMonth);
+            console.log(currBudget)
+            setCurrentBudget(currBudget)
+            // console.log(budgetExists)
+            // console.log(currentBudget)
+
+            if (currBudget !== undefined){
+                setBudgetExists(true);
+                setCurrentBudget(currBudget);
+                setHousing(currBudget.housing.toString());
+                setUtilities(currBudget.utilities.toString());
+                setTransportation(currBudget.transportation.toString());
+                setFood(currBudget.food.toString());
+                setEntertainment(currBudget.entertainment.toString());
+                setSaving(currBudget.saving.toString());
+                setMiscellaneous(currBudget.miscellaneous.toString());
+                setBudgetTotal(parseFloat(currBudget.housing) + parseFloat(currBudget.utilities) + parseFloat(currBudget.transportation) + parseFloat(currBudget.food) + parseFloat(currBudget.entertainment) + parseFloat(currBudget.saving) + parseFloat(currBudget.miscellaneous))
+
             }
         }
+        catch (err) {
+            console.log(err)
+        }
+    }
 
+    useEffect(() => {
         fetchBudget();
     },[])
 
@@ -64,20 +75,22 @@ import axios from 'axios';
 
         if (budgetExists){
             try {
-                const response = await axios.put('http://localhost:3000/api/budget/addbudget/' + authContext.userId + '/' + currentBudget.month, {
-                    user_id: authContext.userId,
-                    housing: parseFloat(newHousing),
-                    utilities: parseFloat(newUtilities),
-                    transportation: parseFloat(newTransportation),
-                    food: parseFloat(newFood),
-                    entertainment: parseFloat(newEntertainment),
-                    saving: parseFloat(newSaving),
-                    miscellaneous: parseFloat(newMiscellaneous),
-                    date: (new Date()).getTime(),
-                    month: (new Date()).getMonth()
-                });
-                alert('Budget added successfully');
-                console.log(response.data);
+                // const response = await axios.put('http://localhost:3000/api/budget/addbudget/' + authContext.userId + '/' + currentBudget.month, {
+                //     user_id: authContext.userId,
+                //     housing: parseFloat(newHousing),
+                //     utilities: parseFloat(newUtilities),
+                //     transportation: parseFloat(newTransportation),
+                //     food: parseFloat(newFood),
+                //     entertainment: parseFloat(newEntertainment),
+                //     saving: parseFloat(newSaving),
+                //     miscellaneous: parseFloat(newMiscellaneous),
+                //     date: (new Date()).getTime(),
+                //     month: (new Date()).getMonth()
+                // });
+
+                // alert('Budget added successfully');
+                alert('Update Each Budget Individually');
+                // console.log(response.data);
             } catch (err) {
                 console.error(err);
                 alert('Error adding budget');
@@ -87,6 +100,7 @@ import axios from 'axios';
             try {
                 const response = await axios.post('http://localhost:3000/api/budget/addbudget', {
                     user_id: authContext.userId,
+                    // user_id: 1,
                     housing: parseFloat(newHousing),
                     utilities: parseFloat(newUtilities),
                     transportation: parseFloat(newTransportation),
@@ -99,6 +113,8 @@ import axios from 'axios';
                 });
                 alert('Budget added successfully');
                 console.log(response.data);
+                // setBudgetExists(true)
+                fetchBudget();
             } catch (err) {
                 console.error(err);
                 alert('Error adding budget');
@@ -114,6 +130,7 @@ import axios from 'axios';
         e.preventDefault();
         try {
             const response = await axios.put('http://localhost:3000/api/budget/updatehousing/' + authContext.userId + '/' + month + '/' + parseFloat(newHousing));
+            // const response = await axios.put('http://localhost:3000/api/budget/updatehousing/1/' + month + '/' + parseFloat(newHousing));
             alert('Housing Budget updated successfully');
             console.log(response.data);
         } catch (err) {
@@ -241,6 +258,7 @@ import axios from 'axios';
 
     return (
         <div>
+            <h1>Current Budget Total: {budgetTotal}</h1>
         <label>Housing</label>
     {!showHousingPopup && (
         <input

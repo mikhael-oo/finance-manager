@@ -2,6 +2,7 @@ import {React, useContext, useEffect, useState} from 'react'
 import { AppContext } from '../../context/AppContext'
 import AuthContext from '../login/AuthContext';
 import axios from 'axios';
+import { format } from 'date-fns'
 
 const AddExpense = (props) => {
     // const { dispatch } = useContext(AppContext);
@@ -14,20 +15,32 @@ const AddExpense = (props) => {
     const [expenseList, setExpenseList] = useState([]);
     // const [id, setId] = useState(0);
 
-    useEffect(() => {
-        const fetchExpenses = async () => {
-            try {
-            const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
-            console.log(response.data)
-            var currMonth = new Date().getMonth();
-            var tempList = response.data;
-            tempList = tempList.filter(e => e.month === currMonth);
-            setExpenseList(tempList)
-            } catch (error) {
-            console.error(error);
-            }
-        };
+    const fetchExpenses = async () => {
+        try {
+        const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+        // const response = await axios.get('http://localhost:3000/api/expense/'+ 1);
+        // console.log(response.data)
+        var currMonth = new Date().getMonth();
+        var tempList = []
+        // tempList = response
+        // tempList = tempList.filter(e => e.month === currMonth);
+        // console.log(response.data)
+        tempList = Array.from(response.data)
+        // console.log(tempList)
+        tempList = tempList.filter(e => e.month === currMonth)
+        // console.log(tempList)
 
+        // console.log(typeof tempList[0].date)
+        
+        // var tempList = Object.values(response.data[0]).filter(e => e.month === currMonth);
+        // console.log(tempList)
+        setExpenseList(tempList)
+        } catch (error) {
+        console.error(error);
+        }
+    };
+
+    useEffect(() => {
         fetchExpenses();
     }, []);
 
@@ -40,6 +53,7 @@ const AddExpense = (props) => {
         try {
             const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
                 uid: authContext.userId,
+                // uid: 1,
                 name: expenseName,
                 amount: amount,
                 category: category,
@@ -47,7 +61,8 @@ const AddExpense = (props) => {
                 month: (new Date()).getMonth()
             });
             alert('Expense adding successfully');
-            console.log(response.data.user);
+            // console.log(response.data.user);
+            fetchExpenses();
         } catch (err) {
             console.error(err);
             alert('Error adding exepense');
@@ -76,10 +91,13 @@ const AddExpense = (props) => {
 
     const onDelete = async (id) => {
         try {
-            const del = await axios.delete('http://localhost:3000/api/expense/deleteexpense/'+ authContext.userId + '/' + id);
-            var tempList = response.data;
-            tempList = tempList.filter(e => e.id != id);
-            setExpenseList(tempList)
+            const response = await axios.delete('http://localhost:3000/api/expense/deleteexpense/'+ authContext.userId + '/' + id);
+            // const response = await axios.delete('http://localhost:3000/api/expense/deleteexpense/1/' + id);
+            console.log(response);
+            // var tempList = response.data;
+            // var tempList = tempList.filter(e => e.id != id);
+            // setExpenseList(tempList)
+            fetchExpenses();
         }
         catch (err) {
             console.log(err);
@@ -123,10 +141,10 @@ const AddExpense = (props) => {
         <tbody>
             {expenseList.map((expense) => (
             <tr key={expense.id}>
-                <td>{expense.name}</td>
+                <td>{expense.title}</td>
                 <td>{expense.amount}</td>
                 <td>{expense.category}</td>
-                <td>{format(new Date(expense.date), "dd/M/yyyy")}</td>
+                <td>{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
                 <td><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
             </tr>
             ))}
