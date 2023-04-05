@@ -27,6 +27,28 @@ function App() {
     <AppProvider>
       <AuthContext.Provider value={{ userId, setUserId }}>
       <BrowserRouter>
+
+      {!userId ? 
+        <div className="App flex">
+          <Routes>
+            <Route path="/" index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
+          </Routes>        
+        </div> 
+        :
+        <div className="App flex">
+          <Layout />
+          <main className='p-7'>
+            <Routes>
+              <Route path="/home" element={<Home />} />
+              <Route path="/expense" element={<Expense />} />
+              <Route path="/bill" element={<Bill />} />
+              <Route path="/planning" element={<Planning />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/history" element={<History userId={userId}/>} />
+            </Routes>
+          </main>
+        </div>
+      }
       
         <div className="App flex">
           <Layout />
