@@ -65,14 +65,15 @@ const Layout = () => {
                             <Link to ="/account">Account</Link>
                         </span>
                     </li>
-                    <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
+                    
+                    { /*<li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
                         <span className="text-2xl block float-left">
                             <MdLogout />  
                         </span>
                         <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
-                            <Link to ="/" /*onClick={authContext.setUserId(null)}*/ >Sign Out</Link>
+                            <Link to ="/" onClick={authContext.setUserId(null)} >Sign Out</Link>
                         </span>
-                    </li>
+    </li> */} 
                 </ul>
             </nav>
 
