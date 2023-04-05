@@ -33,7 +33,7 @@ const UserExpensesTable = ({ userId }) => {
   };
 
   const filteredExpenses = expenses.filter((expense) =>
-    (selectedMonth ? expense.month === selectedMonth : true) &&
+    (selectedMonth ? expense.month === parseInt(selectedMonth) : true) &&
     (selectedCategory ? expense.category === selectedCategory : true) &&
     (selectedAmountRange ? 
       (selectedAmountRange === 'low' ? expense.amount < 50 : expense.amount >= 50) : true)
@@ -52,18 +52,18 @@ const UserExpensesTable = ({ userId }) => {
           onChange={handleMonthChange}
         >
           <option value="">All</option>
-          <option value="January">January</option>
-          <option value="February">February</option>
-          <option value="March">March</option>
-          <option value="April">April</option>
-          <option value="May">May</option>
-          <option value="June">June</option>
-          <option value="July">July</option>
-          <option value="August">August</option>
-          <option value="September">September</option>
-          <option value="October">October</option>
-          <option value="November">November</option>
-          <option value="December">December</option>
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
         </select>
         <label htmlFor="category" className="mx-2">
           Filter by category:
@@ -102,7 +102,7 @@ const UserExpensesTable = ({ userId }) => {
                     <th className="text-left px-4 py-2 border">#</th>
                     <th className="text-left px-4 py-2 border">Month</th>
                     <th className="text-left px-4 py-2 border">Category</th>
-                    <th className="text-left px-4 py-2 border">Description</th>
+                    
                     <th className="text-left px-4 py-2 border">Amount</th>
                 </tr>
                 </thead>
@@ -112,7 +112,7 @@ const UserExpensesTable = ({ userId }) => {
                     <td className="border px-4 py-2">{index + 1}</td>
                     <td className="border px-4 py-2">{expense.month}</td>
                     <td className="border px-4 py-2">{expense.category}</td>
-                    <td className="border px-4 py-2">{expense.description}</td>
+                    
                     <td className="border px-4 py-2">${expense.amount}</td>
                     </tr>
                 ))}
