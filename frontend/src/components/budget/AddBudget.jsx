@@ -100,6 +100,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updatehousing/' + authContext.userId + '/' + month + '/' + parseFloat(newHousing));
             alert('Housing Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating housing budget');
@@ -113,6 +114,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updateutl/' + authContext.userId + '/' + month + '/' + parseFloat(newUtilities));
             alert('Utilities Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating utilities budget');
@@ -125,6 +127,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updatetrans/' + authContext.userId + '/' + month + '/' + parseFloat(newTransportation));
             alert('Transportation Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating transportation budget');
@@ -138,6 +141,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updatefood/' + authContext.userId + '/' + month + '/' + parseFloat(newFood));
             alert('Food Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating food budget');
@@ -151,6 +155,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updatent/' + authContext.userId + '/' + month + '/' + parseFloat(newEntertainment));
             alert('Entertainment Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating entertainment budget');
@@ -164,6 +169,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updatesav/' + authContext.userId + '/' + month + '/' + parseFloat(newSaving));
             alert('Saving Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating saving budget');
@@ -177,6 +183,7 @@ import axios from 'axios';
             const response = await axios.put('http://localhost:3000/api/budget/updatemisc/' + authContext.userId + '/' + month + '/' + parseFloat(newMiscellaneous));
             alert('Misc Budget updated successfully');
             console.log(response.data);
+            fetchBudget();
         } catch (err) {
             console.error(err);
             alert('Error updating misc budget');
