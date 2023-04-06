@@ -25,13 +25,13 @@ function App() {
       <BrowserRouter>
 
       {!userId ? 
-        <div className="App flex">
+        <div className="App flex justify-center">
           <Routes>
             <Route path="/" index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
           </Routes>        
         </div> 
         :
-        <div className="App flex">
+        <div className="App flex h-full">
           <Layout />
           <main className='p-7'>
             <Routes>
