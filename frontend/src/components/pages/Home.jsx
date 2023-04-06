@@ -90,7 +90,7 @@ export const Home = () => {
     
     return (
         <div>
-            <p className="text-2xl font-semibold">Home </p>
+            <p className="text-2xl font-semibold">Home</p>
             <main>
                 <h1>Dashboard</h1>
                 {/* <p>User ID: {authContext.userId}</p> */}
