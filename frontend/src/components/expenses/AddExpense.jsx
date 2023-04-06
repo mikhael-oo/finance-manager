@@ -124,26 +124,26 @@ const AddExpense = (props) => {
                 </select>
                 <button type='submit'>Add</button>
             </form>
-            <div>
-        <table>
+    <div className="flex justify-center">
+        <table className="w-full border table-auto">
         <caption>Expenses</caption>
         {/* <p>User ID: {authContext.userId}</p> */}
         <thead>
             <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Date</th>
+            <th className="text-left px-4 py-2 border">Name</th>
+            <th className="text-left px-4 py-2 border">Amount</th>
+            <th className="text-left px-4 py-2 border">Category</th>
+            <th className="text-left px-4 py-2 border">Date</th>
             </tr>
         </thead>
         <tbody>
             {expenseList.map((expense) => (
             <tr key={expense.id}>
-                <td>{expense.title}</td>
-                <td>{expense.amount}</td>
-                <td>{expense.category}</td>
-                <td>{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
-                <td><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
+                <td className="border px-4 py-2">{expense.title}</td>
+                <td className="border px-4 py-2">{expense.amount}</td>
+                <td className="border px-4 py-2">{expense.category}</td>
+                <td className="border px-4 py-2">{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
+                <td className="border px-4 py-2"><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
             </tr>
             ))}
         </tbody>
