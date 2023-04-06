@@ -1,8 +1,8 @@
 //import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 import { React, useState, useContext, useEffect } from 'react';
 import SavingsIcon from '@mui/icons-material/Savings'
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+// import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+// import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
 import { Chart } from "react-google-charts";
@@ -29,8 +29,8 @@ export const Home = () => {
         var budgetNumber = 0.00;
         var currMonth = (new Date()).getMonth();
         try {
-            // const expensesResponse = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
-            const expensesResponse = await axios.get('http://localhost:3000/api/expense/1');
+            const expensesResponse = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+            // const expensesResponse = await axios.get('http://localhost:3000/api/expense/1');
 
             console.log(expensesResponse.data)
 
@@ -60,8 +60,8 @@ export const Home = () => {
             }
             setSavingTotal(savingsNumber);
 
-            // const budgetResponse = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
-            const budgetResponse = await axios.get('http://localhost:3000/api/budget/1');
+            const budgetResponse = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
+            // const budgetResponse = await axios.get('http://localhost:3000/api/budget/1');
             var budgetList = budgetResponse.data;
             budgetList = budgetList.filter(e => e.month === currMonth);
             for (let i = 0; i < budgetList.length; i++) {
@@ -85,6 +85,10 @@ export const Home = () => {
     useEffect(() => {
         updateCharts();
     },[])
+
+    function capitalizeFirstLetter(string) {
+        return string[0].toUpperCase() + string.slice(1)
+      }
 
     
     return (
@@ -182,7 +186,7 @@ export const Home = () => {
                             {expenseList.slice(-5).reverse().map((expense) => (
                                 <tr key={expense.id}>
                                     <td>{expense.title}</td>
-                                    <td>{expense.category}</td>
+                                    <td>{capitalizeFirstLetter(expense.category)}</td>
                                     <td>{expense.amount}</td>
                                     <td>{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
                                 </tr>

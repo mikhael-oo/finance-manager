@@ -33,20 +33,20 @@ const Layout = () => {
                         </span>
                         
                     </li>
-                    <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
+                    {/* <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
                         <span className="text-2xl block float-left">
                             <CiMoneyBill />
                         </span>
                         <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
                             <Link to ="/bill">Bill</Link>
                         </span>
-                    </li>
+                    </li> */}
                     <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">
                         <span className="text-2xl block float-left">
                             <MdAttachMoney />
                         </span>
                         <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"} `}>
-                            <Link to ="/planning">Finances</Link>
+                            <Link to ="/budget">Budget</Link>
                         </span>
                     </li>
                     <li className="text-cream text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white">

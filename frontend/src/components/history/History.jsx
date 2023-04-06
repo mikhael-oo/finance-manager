@@ -14,7 +14,6 @@ const UserExpensesTable = ({ userId }) => {
   const fetchExpenses = async () => {
     try {
       const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
-      // const response = await axios.get('http://localhost:3000/api/expense/1');
       console.log(response.data)
       setExpenses(response.data);
     } catch (error) {

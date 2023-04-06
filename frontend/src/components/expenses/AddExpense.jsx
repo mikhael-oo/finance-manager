@@ -1,11 +1,9 @@
 import {React, useContext, useEffect, useState} from 'react'
-import { AppContext } from '../../context/AppContext'
 import AuthContext from '../login/AuthContext';
 import axios from 'axios';
 import { format } from 'date-fns'
 
 const AddExpense = (props) => {
-    // const { dispatch } = useContext(AppContext);
     const authContext = useContext(AuthContext);
 
     const [expenseName, setName] = useState('');

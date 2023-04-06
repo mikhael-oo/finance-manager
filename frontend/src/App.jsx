@@ -3,13 +3,11 @@ import Login from "./components/login/Login"
 import SignUp from "./components/signup/SignUp"
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Account } from './components/pages/Account'
-import { Bill } from './components/pages/Bill'
 import { Expense } from './components/pages/Expense'
 import { Home } from './components/pages/Home'
 import History from "./components/history/History"
 import Layout from './components/pages/Layout'
-import { Planning } from './components/pages/Planning'
-import { AppProvider } from './context/AppContext'
+import { Budget } from './components/pages/Budget'
 import {React, useState } from 'react';
 import { AuthContext } from './components/login/AuthContext';
 
@@ -24,7 +22,6 @@ function App() {
   }
 
   return (
-    <AppProvider>
       <AuthContext.Provider value={{ userId, setUserId }}>
       <BrowserRouter>
 
@@ -41,33 +38,31 @@ function App() {
             <Routes>
               <Route path="/home" element={<Home />} />
               <Route path="/expense" element={<Expense />} />
-              <Route path="/bill" element={<Bill />} />
-              <Route path="/planning" element={<Planning />} />
+              <Route path="/budget" element={<Budget />} />
               <Route path="/account" element={<Account />} />
               <Route path="/history" element={<History userId={userId}/>} />
             </Routes>
           </main>
         </div>
-      }
       
-        <div className="App flex">
-          <Layout />
-          <main className='p-7'>
-            <Routes>
-              <Route path="/" index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/expense" element={<Expense />} />
-              <Route path="/bill" element={<Bill />} />
-              <Route path="/planning" element={<Planning />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/history" element={<History userId={userId}/>} />
-            </Routes>
-          </main>
+      
+        // <div className="App flex">
+        //   <Layout />
+        //   <main className='p-7'>
+        //     <Routes>
+        //       <Route path="/" index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
+        //       <Route path="/home" element={<Home />} />
+        //       <Route path="/expense" element={<Expense />} />
+        //       <Route path="/budget" element={<Budget />} />
+        //       <Route path="/account" element={<Account />} />
+        //       <Route path="/history" element={<History userId={userId}/>} />
+        //     </Routes>
+        //   </main>
 
-        </div>
+        // </div>
+    }
       </BrowserRouter>
       </AuthContext.Provider>
-    </AppProvider>
   );
 }
 
