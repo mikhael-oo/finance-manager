@@ -11,27 +11,17 @@ const AddExpense = (props) => {
     const [category, setCat] = useState('');
 
     const [expenseList, setExpenseList] = useState([]);
-    // const [id, setId] = useState(0);
 
     const fetchExpenses = async () => {
         try {
         const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
-        // const response = await axios.get('http://localhost:3000/api/expense/'+ 1);
-        // console.log(response.data)
         var currMonth = new Date().getMonth();
         var tempList = []
         tempList = response.data
         tempList = tempList.filter(e => e.month === currMonth);
-        // console.log(response.data)
         tempList = Array.from(response.data)
-        // console.log(tempList)
         tempList = tempList.filter(e => e.month === currMonth)
-        // console.log(tempList)
 
-        // console.log(typeof tempList[0].date)
-        
-        // var tempList = Object.values(response.data[0]).filter(e => e.month === currMonth);
-        // console.log(tempList)
         setExpenseList(tempList)
         } catch (error) {
         console.error(error);
@@ -46,12 +36,9 @@ const AddExpense = (props) => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        // console.log(category);
-
         try {
             const response = await axios.post('http://localhost:3000/api/expense/addexpense', {
                 uid: authContext.userId,
-                // uid: 1,
                 name: expenseName,
                 amount: amount,
                 category: category,
@@ -59,60 +46,39 @@ const AddExpense = (props) => {
                 month: (new Date()).getMonth()
             });
             alert('Expense adding successfully');
-            // console.log(response.data.user);
             fetchExpenses();
         } catch (err) {
             console.error(err);
             alert('Error adding exepense');
         }
 
-        // const expense = {
-        //     // id: id,
-        //     name: expenseName,
-        //     amount: parseFloat(amount),
-        //     category: category,
-        //     date: (new Date()).getTime(),
-        //     month: (new Date()).getMonth()
-        // };
-
-        // dispatch({
-        //     type: 'ADD_EXPENSE',
-        //     payload: expense,
-        // });
-
         setName('');
         setAmount('');
         setCat('');
-        // setId(id + 1);
 
     };
 
     const onDelete = async (id) => {
         try {
             const response = await axios.delete('http://localhost:3000/api/expense/deleteexpense/'+ authContext.userId + '/' + id);
-            // const response = await axios.delete('http://localhost:3000/api/expense/deleteexpense/1/' + id);
-            console.log(response);
-            // var tempList = response.data;
-            // var tempList = tempList.filter(e => e.id != id);
-            // setExpenseList(tempList)
             fetchExpenses();
         }
         catch (err) {
             console.log(err);
         }
     }
-    
+
     return (
         <div>
-            <form onSubmit={onSubmit}>
-                <label htmlFor='name'>Name</label>
-                <input type='text' id='name' value={expenseName} onChange={(e) => setName(e.target.value)} required/>
+            <form className='flex space-x-2' onSubmit={onSubmit}>
+                <label className='font-semibold' htmlFor='name'>Name: </label>
+                <input className="border-2 border-black rounded-md text-black px-2" type='text' id='name' value={expenseName} onChange={(e) => setName(e.target.value)} required/>
 
-                <label htmlFor='amount'>Amount</label>
-                <input type='number' id='amount' value={amount} onChange={(e) => setAmount(e.target.value)} required/>
+                <label className='font-semibold' htmlFor='amount'>Amount: </label>
+                <input className="border-2 border-black rounded-md text-black px-2" type='number' id='amount' value={amount} onChange={(e) => setAmount(e.target.value)} required/>
 
-                <label htmlFor='category'>Category</label>
-                <select id='category' value={category} onChange={(e) => setCat(e.target.value)} required>
+                <label className='font-semibold' htmlFor='category'>Category: </label>
+                <select className="border-2 border-black rounded-md text-black px-2" id='category' value={category} onChange={(e) => setCat(e.target.value)} required>
                     <option value='category'>Select Category</option>
                     <option value='housing'>Housing</option>
                     <option value='utilities'>Utilities</option>
@@ -122,35 +88,37 @@ const AddExpense = (props) => {
                     <option value='saving'>Saving</option>
                     <option value='miscellaneous'>Miscellaneous</option>
                 </select>
-                <button type='submit'>Add</button>
+                <button className="border-2 rounded-md bg-blue-600 text-white px-4" type='submit'>Add Expense</button>
             </form>
+            <br/>
             <div>
-        <table>
-        <caption>Expenses</caption>
-        {/* <p>User ID: {authContext.userId}</p> */}
-        <thead>
-            <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {expenseList.map((expense) => (
-            <tr key={expense.id}>
-                <td>{expense.title}</td>
-                <td>{expense.amount}</td>
-                <td>{expense.category}</td>
-                <td>{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
-                <td><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
-            </tr>
-            ))}
-        </tbody>
-        </table>
-    </div>
+                <table className="w-full border table-auto">
+                    <caption className='font-semibold'>Expenses List</caption>
+                    {/* <p>User ID: {authContext.userId}</p> */}
+                    <thead>
+                        <tr>
+                        <th className="text-left px-4 py-2 border">Name</th>
+                        <th className="text-left px-4 py-2 border">Amount</th>
+                        <th className="text-left px-4 py-2 border">Category</th>
+                        <th className="text-left px-4 py-2 border">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {expenseList.map((expense) => (
+                        <tr key={expense.id}>
+                            <td className="text-left px-4 py-2 border">{expense.title}</td>
+                            <td className="text-left px-4 py-2 border">{expense.amount}</td>
+                            <td className="text-left px-4 py-2 border">{expense.category}</td>
+                            <td className="text-left px-4 py-2 border">{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
+                            <td className="text-left px-4 py-2 border"><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
+                        </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
+
 }
 
 export default AddExpense;

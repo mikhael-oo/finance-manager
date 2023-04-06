@@ -33,19 +33,12 @@ import axios from 'axios';
     const fetchBudget = async () => {
         try {
             const response = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
-            // const response = await axios.get('http://localhost:3000/api/budget/'+ 1);
-            // console.log(response)
-            // setBudgetList(response);
-
             var tempList = []
             tempList = Array.from(response.data)
 
             var currMonth = new Date().getMonth();
             var currBudget = tempList.find(b => b.month === currMonth);
-            console.log(currBudget)
             setCurrentBudget(currBudget)
-            // console.log(budgetExists)
-            // console.log(currentBudget)
 
             if (currBudget !== undefined){
                 setBudgetExists(true);
@@ -74,33 +67,12 @@ import axios from 'axios';
         e.preventDefault();
 
         if (budgetExists){
-            try {
-                // const response = await axios.put('http://localhost:3000/api/budget/addbudget/' + authContext.userId + '/' + currentBudget.month, {
-                //     user_id: authContext.userId,
-                //     housing: parseFloat(newHousing),
-                //     utilities: parseFloat(newUtilities),
-                //     transportation: parseFloat(newTransportation),
-                //     food: parseFloat(newFood),
-                //     entertainment: parseFloat(newEntertainment),
-                //     saving: parseFloat(newSaving),
-                //     miscellaneous: parseFloat(newMiscellaneous),
-                //     date: (new Date()).getTime(),
-                //     month: (new Date()).getMonth()
-                // });
-
-                // alert('Budget added successfully');
-                alert('Update Each Budget Individually');
-                // console.log(response.data);
-            } catch (err) {
-                console.error(err);
-                alert('Error adding budget');
-            }
+            alert('Update Each Budget Individually');
         }
         else {
             try {
                 const response = await axios.post('http://localhost:3000/api/budget/addbudget', {
                     user_id: authContext.userId,
-                    // user_id: 1,
                     housing: parseFloat(newHousing),
                     utilities: parseFloat(newUtilities),
                     transportation: parseFloat(newTransportation),
@@ -112,16 +84,12 @@ import axios from 'axios';
                     month: (new Date()).getMonth()
                 });
                 alert('Budget added successfully');
-                console.log(response.data);
-                // setBudgetExists(true)
                 fetchBudget();
             } catch (err) {
                 console.error(err);
                 alert('Error adding budget');
             }
         }
-
-        
         
     }
 
@@ -130,7 +98,6 @@ import axios from 'axios';
         e.preventDefault();
         try {
             const response = await axios.put('http://localhost:3000/api/budget/updatehousing/' + authContext.userId + '/' + month + '/' + parseFloat(newHousing));
-            // const response = await axios.put('http://localhost:3000/api/budget/updatehousing/1/' + month + '/' + parseFloat(newHousing));
             alert('Housing Budget updated successfully');
             console.log(response.data);
         } catch (err) {
@@ -216,305 +183,253 @@ import axios from 'axios';
         }
     };
 
-    // return (
-
-    // <div>
-    //     <form onSubmit={onSubmit}>
-    //         <label>Housing</label>
-    //         <input type='number'
-    //             id='housing'
-    //             value={newHousing}
-    //             onChange={(e) => setHousing(e.target.value)}
-    //             />
-    //         <a href="#" onClick={() => setShowHousingPopup(true)}>UPDATE HOUSING</a>
-    //         <div className="HousingPopup">
-
-    //         </div>
-
-    //         <label>Utilities</label>
-    //         <input type='number' id='utilities' value={newUtilities} onChange={(e) => setUtilities(e.target.value)} />
-    //         <label>Transportation</label>
-    //         <input type='number' id='transportation' value={newTransportation} onChange={(e) => setTransportation(e.target.value)} />
-    //         <label>Food</label>
-    //         <input type='number' id='food' value={newFood} onChange={(e) => setFood(e.target.value)} />
-    //         <label>Entertainment</label>
-    //         <input type='number' id='entertainment' value={newEntertainment} onChange={(e) => setEntertainment(e.target.value)} />
-    //         <label>Saving</label>
-    //         <input type='number' id='saving' value={newSaving} onChange={(e) => setSaving(e.target.value)} />
-    //         <label>Miscellaneous</label>
-    //         <input type='number' id='miscellaneous' value={newMiscellaneous} onChange={(e) => setMiscellaneous(e.target.value)} />
-    //         <button type="submit">Set Budget</button>
-    //     </form>
-
-
-
-
-
-
-    // </div>
-
-    
-    // )
-
-    return (
-        <div>
-            <h1>Current Budget Total: {budgetTotal}</h1>
-        <label>Housing</label>
-    {!showHousingPopup && (
+return (
+    <div>
+        <h1 className='font-semibold'>Current Budget Total: {budgetTotal}</h1>
+    <label className='font-semibold'>Housing: </label>
+{!showHousingPopup && (
+    <input
+    className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+    type="number"
+    id="housing"
+    value={newHousing}
+    onChange={(e) => setHousing(e.target.value)}
+    />
+)}
+{showHousingPopup && (
+    <div className="popup">
+    <form onSubmit={updateHousing}>
+        <label className='font-semibold'>Update Housing Here: </label>
         <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
         type="number"
         id="housing"
         value={newHousing}
         onChange={(e) => setHousing(e.target.value)}
         />
-    )}
-    {showHousingPopup && (
-        <div className="popup">
-        <form onSubmit={updateHousing}>
-            <label>Update Housing Here</label>
-            <input
-            type="number"
-            id="housing"
-            value={newHousing}
-            onChange={(e) => setHousing(e.target.value)}
-            />
-            <button type="submit">Confirm Update</button>
-            <button type="button" onClick={() => setShowHousingPopup(false)}>
-            Cancel
-            </button>
-        </form>
-        </div>
-    )}
-    {!showHousingPopup && (
-        <button onClick={() => setShowHousingPopup(true)}>Update Housing</button>
-    )}
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowHousingPopup(false)}>
+        Cancel
+        </button>
+    </form>
+    </div>
+)}
+{!showHousingPopup && (
+    <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowHousingPopup(true)}>Update Housing</button>
+)}
 
-    <br />
+<br />
 
-    <label>Utilities</label>
-    {!showUtilitiesPopup && (
+<label className='font-semibold'>Utilities: </label>
+{!showUtilitiesPopup && (
+    <input
+    className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+    type="number"
+    id="utilities"
+    value={newUtilities}
+    onChange={(e) => setUtilities(e.target.value)}
+    />
+)}
+{showUtilitiesPopup && (
+    <div className="popup">
+    <form onSubmit={updateUtilities}>
+        <label className='font-semibold'>Update Utilities Here: </label>
         <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
         type="number"
         id="utilities"
         value={newUtilities}
         onChange={(e) => setUtilities(e.target.value)}
         />
-    )}
-    {showUtilitiesPopup && (
-        <div className="popup">
-        <form onSubmit={updateUtilities}>
-            <label>Update Utilities Here</label>
-            <input
-            type="number"
-            id="utilities"
-            value={newUtilities}
-            onChange={(e) => setUtilities(e.target.value)}
-            />
-            <button type="submit">Confirm Update</button>
-            <button type="button" onClick={() => setShowUtilitiesPopup(false)}>
-            Cancel
-            </button>
-        </form>
-        </div>
-    )}
-    {!showUtilitiesPopup && (
-        <button onClick={() => setShowUtilitiesPopup(true)}>Update Utilities</button>
-    )}
-        <br />
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowUtilitiesPopup(false)}>
+        Cancel
+        </button>
+    </form>
+    </div>
+)}
+{!showUtilitiesPopup && (
+    <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowUtilitiesPopup(true)}>Update Utilities</button>
+)}
+    <br />
 
-        <label>Transportation</label>
-    {!showTransportationPopup && (
+    <label className='font-semibold'>Transportation: </label>
+{!showTransportationPopup && (
+    <input
+    className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+    type="number"
+    id="transportation"
+    value={newTransportation}
+    onChange={(e) => setTransportation(e.target.value)}
+    />
+)}
+{showTransportationPopup && (
+    <div className="popup">
+    <form onSubmit={updateTransportation}>
+        <label className='font-semibold'>Update Transportation Here: </label>
         <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
         type="number"
         id="transportation"
         value={newTransportation}
         onChange={(e) => setTransportation(e.target.value)}
         />
-    )}
-    {showTransportationPopup && (
-        <div className="popup">
-        <form onSubmit={updateTransportation}>
-            <label>Update Transportation Here</label>
-            <input
-            type="number"
-            id="transportation"
-            value={newTransportation}
-            onChange={(e) => setTransportation(e.target.value)}
-            />
-            <button type="submit">Confirm Update</button>
-            <button type="button" onClick={() => setShowTransportationPopup(false)}>
-            Cancel
-            </button>
-        </form>
-        </div>
-    )}
-    {!showTransportationPopup && (
-        <button onClick={() => setShowTransportationPopup(true)}>Update Transportation</button>
-    )}
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowTransportationPopup(false)}>
+        Cancel
+        </button>
+    </form>
+    </div>
+)}
+{!showTransportationPopup && (
+    <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowTransportationPopup(true)}>Update Transportation</button>
+)}
 
-    <br />
+<br />
 
-    <label>Food</label>
-    {!showFoodPopup && (
+<label className='font-semibold'>Food: </label>
+{!showFoodPopup && (
+    <input
+    className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+    type="number"
+    id="food"
+    value={newFood}
+    onChange={(e) => setFood(e.target.value)}
+    />
+)}
+{showFoodPopup && (
+    <div className="popup">
+    <form onSubmit={updateFood}>
+        <label className='font-semibold'>Update Food Here: </label>
         <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
         type="number"
         id="food"
         value={newFood}
         onChange={(e) => setFood(e.target.value)}
         />
-    )}
-    {showFoodPopup && (
-        <div className="popup">
-        <form onSubmit={updateFood}>
-            <label>Update Food Here</label>
-            <input
-            type="number"
-            id="food"
-            value={newFood}
-            onChange={(e) => setFood(e.target.value)}
-            />
-            <button type="submit">Confirm Update</button>
-            <button type="button" onClick={() => setShowFoodPopup(false)}>
-            Cancel
-            </button>
-        </form>
-        </div>
-    )}
-    {!showFoodPopup && (
-        <button onClick={() => setShowFoodPopup(true)}>Update Food</button>
-    )}
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowFoodPopup(false)}>
+        Cancel
+        </button>
+    </form>
+    </div>
+)}
+{!showFoodPopup && (
+    <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowFoodPopup(true)}>Update Food</button>
+)}
 
-        <br />
+    <br />
 
-        <label>Entertainment</label>
-        {!showEntertainmentPopup && (
+    <label className='font-semibold'>Entertainment: </label>
+    {!showEntertainmentPopup && (
+    <input
+    className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+    type="number"
+    id="entertainment"
+    value={newEntertainment}
+    onChange={(e) => setEntertainment(e.target.value)}
+    />
+)}
+{showEntertainmentPopup && (
+    <div className="popup">
+    <form onSubmit={updateEntertainment}>
+        <label className='font-semibold'>Update Entertainment Here: </label>
         <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
         type="number"
         id="entertainment"
         value={newEntertainment}
         onChange={(e) => setEntertainment(e.target.value)}
         />
-    )}
-    {showEntertainmentPopup && (
-        <div className="popup">
-        <form onSubmit={updateEntertainment}>
-            <label>Update Entertainment Here</label>
-            <input
-            type="number"
-            id="entertainment"
-            value={newEntertainment}
-            onChange={(e) => setEntertainment(e.target.value)}
-            />
-            <button type="submit">Confirm Update</button>
-            <button type="button" onClick={() => setShowEntertainmentPopup(false)}>
-            Cancel
-            </button>
-        </form>
-        </div>
-    )}
-    {!showEntertainmentPopup && (
-        <button onClick={() => setShowEntertainmentPopup(true)}>Update Entertainment</button>
-    )}
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowEntertainmentPopup(false)}>
+        Cancel
+        </button>
+    </form>
+    </div>
+)}
+{!showEntertainmentPopup && (
+    <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowEntertainmentPopup(true)}>Update Entertainment</button>
+)}
 
-    <br />
+<br />
 
-    <label>Saving</label>
-    {!showSavingPopup && (
+<label className='font-semibold'>Saving: </label>
+{!showSavingPopup && (
+    <input
+    className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+    type="number"
+    id="saving"
+    value={newSaving}
+    onChange={(e) => setSaving(e.target.value)}
+    />
+)}
+{showSavingPopup && (
+    <div className="popup">
+    <form onSubmit={updateSaving}>
+        <label className='font-semibold'>Update Saving Here: </label>
         <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
         type="number"
         id="saving"
         value={newSaving}
         onChange={(e) => setSaving(e.target.value)}
         />
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+        <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowSavingPopup(false)}>
+        Cancel
+        </button>
+    </form>
+    </div>
+)}
+{!showSavingPopup && (
+    <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowSavingPopup(true)}>Update Saving</button>
+)}
+
+    <br />
+
+    <label className='font-semibold'>Miscellaneous: </label>
+    {!showMiscellaneousPopup && (
+        <input
+        className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
+        type="number"
+        id="miscellaneous"
+        value={newMiscellaneous}
+        onChange={(e) => setMiscellaneous(e.target.value)}
+        />
+        
     )}
-    {showSavingPopup && (
+    {showMiscellaneousPopup && (
         <div className="popup">
-        <form onSubmit={updateSaving}>
-            <label>Update Saving Here</label>
+        <form onSubmit={updateMiscellaneous}>
+            <label className='font-semibold'>Update Miscellaneous Here: </label>
             <input
-            type="number"
-            id="saving"
-            value={newSaving}
-            onChange={(e) => setSaving(e.target.value)}
-            />
-            <button type="submit">Confirm Update</button>
-            <button type="button" onClick={() => setShowSavingPopup(false)}>
-            Cancel
-            </button>
-        </form>
-        </div>
-    )}
-    {!showSavingPopup && (
-        <button onClick={() => setShowSavingPopup(true)}>Update Saving</button>
-    )}
-
-        <br />
-
-        <label>Miscellaneous</label>
-        {!showMiscellaneousPopup && (
-            <input
+            className="border-solid border-2 border-black rounded-md text-center mx-1 my-2"
             type="number"
             id="miscellaneous"
             value={newMiscellaneous}
             onChange={(e) => setMiscellaneous(e.target.value)}
             />
-        )}
-        {showMiscellaneousPopup && (
-            <div className="popup">
-            <form onSubmit={updateMiscellaneous}>
-                <label>Update Miscellaneous Here</label>
-                <input
-                type="number"
-                id="miscellaneous"
-                value={newMiscellaneous}
-                onChange={(e) => setMiscellaneous(e.target.value)}
-                />
-                <button type="submit">Confirm Update</button>
-                <button type="button" onClick={() => setShowMiscellaneousPopup(false)}>
-                Cancel
-                </button>
-            </form>
-            </div>
-        )}
-        {!showMiscellaneousPopup && (
-            <button onClick={() => setShowMiscellaneousPopup(true)}>Update Miscellaneous</button>
-        )}
-
-        <div>
-            <button onClick={handleSubmit}>SUBMIT BUDGET</button>
+            <button className="border-2 border-black rounded-md px-2 mx-1" type="submit">Confirm Update</button>
+            <button className="border-2 border-black rounded-md px-2 mx-1" type="button" onClick={() => setShowMiscellaneousPopup(false)}>
+            Cancel
+            </button>
+        </form>
         </div>
+    )}
+    {!showMiscellaneousPopup && (
+        <button className="border-2 border-black rounded-md px-2 mx-1" onClick={() => setShowMiscellaneousPopup(true)}>Update Miscellaneous</button>
+    )}
+    
+    <div>
+        <br/>
+        <button className="border-2 rounded-md bg-blue-600 text-white px-4" onClick={handleSubmit}>Submit Budget</button>
+    </div>
 </div>
 )
+
 
 }
 
 export default AddBudget;
-
-//import { AppContext } from '../../context/AppContext'
-
-// const {dispatch} = useContext(AppContext);
-
-        // const budget = {
-        //     housing: parseFloat(newHousing),
-        //     utilities: parseFloat(newUtilities),
-        //     transportation: parseFloat(newTransportation),
-        //     food: parseFloat(newFood),
-        //     entertainment: parseFloat(newEntertainment),
-        //     saving: parseFloat(newSaving),
-        //     miscellaneous: parseFloat(newMiscellaneous),
-        //     date: (new Date()).getTime(),
-        //     month: (new Date()).getMonth()
-        // };
-
-        // dispatch({
-        //     type: 'ADD_BUDGET',
-        //     payload: budget,
-        // });
-
-                // setHousing('');
-        // setUtilities('');
-        // setTransportation('');
-        // setFood('');
-        // setEntertainment('');
-        // setSaving('');
-        // setMiscellaneous('');

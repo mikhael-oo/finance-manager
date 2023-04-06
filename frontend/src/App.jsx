@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import Login from "./components/login/Login"
 import SignUp from "./components/signup/SignUp"
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -44,22 +43,6 @@ function App() {
             </Routes>
           </main>
         </div>
-      
-      
-        // <div className="App flex">
-        //   <Layout />
-        //   <main className='p-7'>
-        //     <Routes>
-        //       <Route path="/" index element={currentForm === "Login" ? <Login onFormSwitch={toggleForm}/> : <SignUp onFormSwitch={toggleForm}/>} />
-        //       <Route path="/home" element={<Home />} />
-        //       <Route path="/expense" element={<Expense />} />
-        //       <Route path="/budget" element={<Budget />} />
-        //       <Route path="/account" element={<Account />} />
-        //       <Route path="/history" element={<History userId={userId}/>} />
-        //     </Routes>
-        //   </main>
-
-        // </div>
     }
       </BrowserRouter>
       </AuthContext.Provider>
