@@ -19,9 +19,9 @@ const AddExpense = (props) => {
         try {
         const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
         // const response = await axios.get('http://localhost:3000/api/expense/'+ 1);
-        console.log(response.data)
+        // console.log(response.data)
         var currMonth = new Date().getMonth();
-        // var tempList = []
+        var tempList = []
         tempList = response.data
         tempList = tempList.filter(e => e.month === currMonth);
         // console.log(response.data)
