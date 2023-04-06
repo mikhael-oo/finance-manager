@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import AuthContext from '../login/AuthContext';
+import { format } from 'date-fns'
 import axios from 'axios';
 
 const UserExpensesTable = ({ userId }) => {
+  const authContext = useContext(AuthContext);
+  
   const [expenses, setExpenses] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedAmountRange, setSelectedAmountRange] = useState('');
 
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      try {
-        const response = await axios.get('/api/expense/'+ userId);
-        setExpenses(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const fetchExpenses = async () => {
+    try {
+      // const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+      const response = await axios.get('http://localhost:3000/api/expense/1');
+      console.log(response.data)
+      setExpenses(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
     fetchExpenses();
   }, []);
 
@@ -38,6 +44,10 @@ const UserExpensesTable = ({ userId }) => {
     (selectedAmountRange ? 
       (selectedAmountRange === 'low' ? expense.amount < 50 : expense.amount >= 50) : true)
   );
+
+  function capitalizeFirstLetter(string) {
+    return string[0].toUpperCase() + string.slice(1)
+  }
 
   return (
     <div className="flex flex-col">
@@ -75,11 +85,14 @@ const UserExpensesTable = ({ userId }) => {
           onChange={handleCategoryChange}
         >
           <option value="">All</option>
-          <option value="Food">Food</option>
-          <option value="Transportation">Transportation</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Utilities">Utilities</option>
-          <option value="Other">Other</option>
+          <option value='housing'>Housing</option>
+          <option value='utilities'>Utilities</option>
+          <option value='transportation'>Transportation</option>
+          <option value='food'>Food</option>
+          <option value='entertainment'>Entertainment</option>
+          <option value='saving'>Saving</option>
+          <option value='miscellaneous'>Miscellaneous</option>
+
         </select>
         <label htmlFor="amount-range" className="mx-2">
           Filter by amount range:
@@ -101,8 +114,8 @@ const UserExpensesTable = ({ userId }) => {
                 <tr>
                     <th className="text-left px-4 py-2 border">#</th>
                     <th className="text-left px-4 py-2 border">Month</th>
+                    <th className="text-left px-4 py-2 border">Name</th>
                     <th className="text-left px-4 py-2 border">Category</th>
-                    
                     <th className="text-left px-4 py-2 border">Amount</th>
                 </tr>
                 </thead>
@@ -110,9 +123,9 @@ const UserExpensesTable = ({ userId }) => {
                 {filteredExpenses.map((expense, index) => (
                     <tr key={expense.id}>
                     <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2">{expense.month}</td>
-                    <td className="border px-4 py-2">{expense.category}</td>
-                    
+                    <td className="border px-4 py-2">{format(new Date(parseInt(expense.date)),"MMMM")}</td>
+                    <td className="border px-4 py-2">{expense.title}</td>
+                    <td className="border px-4 py-2">{capitalizeFirstLetter(expense.category)}</td>
                     <td className="border px-4 py-2">${expense.amount}</td>
                     </tr>
                 ))}
