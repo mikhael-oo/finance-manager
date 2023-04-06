@@ -19,11 +19,11 @@ const AddExpense = (props) => {
         try {
         const response = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
         // const response = await axios.get('http://localhost:3000/api/expense/'+ 1);
-        // console.log(response.data)
+        console.log(response.data)
         var currMonth = new Date().getMonth();
-        var tempList = []
-        // tempList = response
-        // tempList = tempList.filter(e => e.month === currMonth);
+        // var tempList = []
+        tempList = response.data
+        tempList = tempList.filter(e => e.month === currMonth);
         // console.log(response.data)
         tempList = Array.from(response.data)
         // console.log(tempList)
@@ -82,9 +82,9 @@ const AddExpense = (props) => {
         //     payload: expense,
         // });
 
-        // setName('');
-        // setAmount('');
-        // setCat('');
+        setName('');
+        setAmount('');
+        setCat('');
         // setId(id + 1);
 
     };
