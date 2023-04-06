@@ -90,32 +90,31 @@ const AddExpense = (props) => {
                 </select>
                 <button className="border-2 rounded-md bg-blue-600 text-white px-4" type='submit'>Add Expense</button>
             </form>
-            <br/>
             <div>
-                <table className="w-full border table-auto">
-                    <caption className='font-semibold'>Expenses List</caption>
-                    {/* <p>User ID: {authContext.userId}</p> */}
-                    <thead>
-                        <tr>
-                        <th className="text-left px-4 py-2 border">Name</th>
-                        <th className="text-left px-4 py-2 border">Amount</th>
-                        <th className="text-left px-4 py-2 border">Category</th>
-                        <th className="text-left px-4 py-2 border">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {expenseList.map((expense) => (
-                        <tr key={expense.id}>
-                            <td className="text-left px-4 py-2 border">{expense.title}</td>
-                            <td className="text-left px-4 py-2 border">{expense.amount}</td>
-                            <td className="text-left px-4 py-2 border">{expense.category}</td>
-                            <td className="text-left px-4 py-2 border">{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
-                            <td className="text-left px-4 py-2 border"><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
-                        </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+        <table>
+        <caption>Expenses</caption>
+        {/* <p>User ID: {authContext.userId}</p> */}
+        <thead>
+            <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {expenseList.map((expense) => (
+            <tr key={expense.id}>
+                <td>{expense.title}</td>
+                <td>{expense.amount}</td>
+                <td>{expense.category}</td>
+                <td>{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
+                <td><button onClick={() => onDelete(expense.id)}>Remove Expense</button></td>
+            </tr>
+            ))}
+        </tbody>
+        </table>
+    </div>
         </div>
     )
 
