@@ -116,28 +116,43 @@ class User {
     //   }
     // }
 
-    static async update(id, user) {
+    // static async update(id, user) {
+    //   const client = await pool.connect();
+    //   try {
+    //     const fields = [];
+    //     const values = [];
+    //     let index = 1;
+    //     for (const key in user) {
+    //       if (user[key] !== undefined) {
+    //         fields.push(`${key} = $${index}`);
+    //         values.push(user[key]);
+    //         index++;
+    //       }
+    //     }
+    //     const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${index} RETURNING *`;
+    //     const result = await client.query(query, [...values, id]);
+    //     return result.rows[0];
+    //   } catch (err) {
+    //     console.error(err);
+    //   } finally {
+    //     client.release();
+    //   }
+    // }
+
+    static async update(user_id, attribute, update) {
       const client = await pool.connect();
       try {
-        const fields = [];
-        const values = [];
-        let index = 1;
-        for (const key in user) {
-          if (user[key] !== undefined) {
-            fields.push(`${key} = $${index}`);
-            values.push(user[key]);
-            index++;
-          }
-        }
-        const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${index} RETURNING *`;
-        const result = await client.query(query, [...values, id]);
-        return result.rows[0];
+      let query = 'UPDATE budget SET ' + attribute + ' = ' + update + ' WHERE user_id = $1';
+      console.log(query);
+      const value = user_id;
+      const result = await client.query(query, value);
+      return result.rows;
       } catch (err) {
-        console.error(err);
+      console.error('Error updating user attribute:', err);
       } finally {
-        client.release();
+      client.release();
       }
-    }
+  }
     
   
     static async delete(id) {

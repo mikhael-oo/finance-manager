@@ -111,4 +111,96 @@ router.get('/', async (req, res) => {
     }
   });
 
+
+
+  router.put('/updatefname/:uid/:update', async (req, res) => {
+    const attribute = 'first_name'
+    const userId = req.params.uid;
+    const update = req.params.update;
+
+    try {
+    const budget = await Budget.update(userId, attribute, update);
+    if (budget) {
+        res.json(budget);
+    } else {
+        res.status(404).json({ message: 'Budget not found' });
+    }
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.put('/updatelname/:uid/:update', async (req, res) => {
+  const attribute = 'last_name'
+  const userId = req.params.uid;
+  const update = req.params.update;
+
+  try {
+  const budget = await Budget.update(userId, attribute, update);
+  if (budget) {
+      res.json(budget);
+  } else {
+      res.status(404).json({ message: 'Budget not found' });
+  }
+  } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.put('/updateuser/:uid/:update', async (req, res) => {
+  const attribute = 'username'
+  const userId = req.params.uid;
+  const update = req.params.update;
+
+  try {
+  const budget = await Budget.update(userId, attribute, update);
+  if (budget) {
+      res.json(budget);
+  } else {
+      res.status(404).json({ message: 'Budget not found' });
+  }
+  } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.put('/updateemail/:uid/:update', async (req, res) => {
+  const attribute = 'email'
+  const userId = req.params.uid;
+  const update = req.params.update;
+
+  try {
+  const budget = await Budget.update(userId, attribute, update);
+  if (budget) {
+      res.json(budget);
+  } else {
+      res.status(404).json({ message: 'Budget not found' });
+  }
+  } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.put('/updatepass/:uid/:update', async (req, res) => {
+  const attribute = 'password'
+  const userId = req.params.uid;
+  const update = req.params.update;
+
+  try {
+  const budget = await Budget.update(userId, attribute, update);
+  if (budget) {
+      res.json(budget);
+  } else {
+      res.status(404).json({ message: 'Budget not found' });
+  }
+  } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
