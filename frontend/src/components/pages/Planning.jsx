@@ -7,8 +7,8 @@ export const Planning = () => {
         <div>
             <p>Planning</p>
             <AddBudget />
-            <Budget />
-            <Remaining />
+            {/* <Budget /> */}
+            {/* <Remaining /> */}
         </div>
     );
 };

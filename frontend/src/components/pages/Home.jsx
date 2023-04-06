@@ -1,5 +1,5 @@
 //import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
-import { React, useState, useContext } from 'react';
+import { React, useState, useContext, useEffect } from 'react';
 import SavingsIcon from '@mui/icons-material/Savings'
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
@@ -7,7 +7,7 @@ import {GiExpense} from "react-icons/gi";
 import {CiMoneyBill} from "react-icons/ci";
 import { Chart } from "react-google-charts";
 import AuthContext from '../login/AuthContext';
-import DatePicker from "react-datepicker";
+import { format } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
@@ -15,55 +15,85 @@ export const Home = () => {
 
     const authContext = useContext(AuthContext);
 
-    var expensesNumber = 0;
-    var lastMonthExpensesNumber = 0;
-    var savingsNumber = 0;
-    var budgetNumber = 0;
+    const [expenseTotal, setExpenseTotal] = useState(0.00);
+    const [expenseLastTotal, setExpenseLastTotal] = useState(0.00);
+    const [savingsTotal, setSavingTotal] = useState(0.00);
+    const [budgetTotal, setBudgetTotal] = useState(0.00);
+    const [expenseList, setExpenseList] = useState([]);
+    const [recentExpenseList, setRecentExpenseList] = useState([]);
 
-    async function updateCharts(date) {
-        var currMonth = date.getMonth();
+    const updateCharts = async () => {
+        var expensesNumber = 0.00;
+        var lastMonthExpensesNumber = 0.00;
+        var savingsNumber = 0.00;
+        var budgetNumber = 0.00;
+        var currMonth = (new Date()).getMonth();
         try {
-            const expensesResponse = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+            // const expensesResponse = await axios.get('http://localhost:3000/api/expense/'+ authContext.userId);
+            const expensesResponse = await axios.get('http://localhost:3000/api/expense/1');
+
+            console.log(expensesResponse.data)
+
             var expensesList = expensesResponse.data;
             var currExpensesList = expensesList.filter(e => e.month === currMonth);
             var prevExpensesList = expensesList.filter(e => e.month === (currMonth - 1));
+            setExpenseList(expensesList)
+            // console.log(currExpensesList)
+            // console.log("test")
+            // console.log(prevExpensesList)
 
             for (let i = 0; i < currExpensesList.length; i++) {
-                expensesNumber += currExpensesList[i].amount;
+                expensesNumber += parseFloat(currExpensesList[i].amount);
             }
+            setExpenseTotal(expensesNumber)
+            // console.log(expensesNumber)
+            // console.log(expenseTotal)
 
             for (let i = 0; i < prevExpensesList.length; i++) {
-                lastMonthExpensesNumber += prevExpensesList[i].amount;
+                lastMonthExpensesNumber += parseFloat(prevExpensesList[i].amount);
             }
+            setExpenseLastTotal(lastMonthExpensesNumber);
 
-            const budgetResponse = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
+            var savingsList = currExpensesList.filter(e => e.category === "saving")
+            for (let i = 0; i < savingsList.length; i++) {
+                savingsNumber += parseFloat(savingsList[i].amount)
+            }
+            setSavingTotal(savingsNumber);
+
+            // const budgetResponse = await axios.get('http://localhost:3000/api/budget/'+ authContext.userId);
+            const budgetResponse = await axios.get('http://localhost:3000/api/budget/1');
             var budgetList = budgetResponse.data;
             budgetList = budgetList.filter(e => e.month === currMonth);
             for (let i = 0; i < budgetList.length; i++) {
-                budgetNumber += budgetList[i].housing;
-                budgetNumber += budgetList[i].utilities;
-                budgetNumber += budgetList[i].transportation;
-                budgetNumber += budgetList[i].food;
-                budgetNumber += budgetList[i].entertainment;
-                budgetNumber += budgetList[i].saving;
-                budgetNumber += budgetList[i].miscellaneous;
+                budgetNumber += parseFloat(budgetList[i].housing);
+                budgetNumber += parseFloat(budgetList[i].utilities);
+                budgetNumber += parseFloat(budgetList[i].transportation);
+                budgetNumber += parseFloat(budgetList[i].food);
+                budgetNumber += parseFloat(budgetList[i].entertainment);
+                budgetNumber += parseFloat(budgetList[i].saving);
+                budgetNumber += parseFloat(budgetList[i].miscellaneous);
             }
+            setBudgetTotal(budgetNumber);
+            // console.log(budgetTotal)
+
+
         } catch (error) {
             console.error(error);
         }
     }
 
-    const [startDate, setStartDate] = useState(new Date());
+    useEffect(() => {
+        updateCharts();
+    },[])
+
+    
     return (
         <div>
             <p className="text-2xl font-semibold">Home </p>
             <main>
                 <h1>Dashboard</h1>
-                <p>User ID: {authContext.userId}</p>
-
-                <div className="date">
-                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} onSelect={updateCharts(startDate)}/>
-                </div>
+                {/* <p>User ID: {authContext.userId}</p> */}
+                <p>User ID: {1}</p>
 
                 <div className="insights">
 
@@ -72,14 +102,14 @@ export const Home = () => {
                         <div className="middle">
                             <div className="left">
                                 <h3>Total Savings: </h3>
-                                <h1>{savingsNumber}</h1>
+                                <h1>{savingsTotal}</h1>
                             </div>
                             <div className="savings-chart">
                                 {/* Insert chart of savings vs. debt here */}
                                 <Chart
                                     chartType="ColumnChart"
-                                    data={[["Type", "Amount"], ["Savings", savingsNumber], ["Expenses", expensesNumber]]}
-                                    options={{title: "Savings vs. Expenses",
+                                    data={[["Type", "Amount"], ["Savings", savingsTotal], ["Total", expenseTotal]]}
+                                    options={{title: "Savings vs. Total Spent",
                                                 legend: { position: "none"}}}
                                     width={"100%"}
                                     height={"300px"}
@@ -94,13 +124,13 @@ export const Home = () => {
                         <div className="middle">
                             <div className="left">
                                 <h3>Total Expenses: </h3>
-                                <h1>{expensesNumber}</h1>
+                                <h1>{expenseTotal}</h1>
                             </div>
                             <div className="expenses-chart">
                                 {/* Insert chart of debt vs last month here */}
                                 <Chart
                                     chartType="ColumnChart"
-                                    data={[["Type", "Amount"], ["Current month", expensesNumber], ["Last month", lastMonthExpensesNumber]]}
+                                    data={[["Type", "Amount"], ["Current month", expenseTotal], ["Last month", expenseLastTotal]]}
                                     options={{title: "This months' expenses vs. Last month's expenses",
                                                 legend: { position: "none"}}}
                                     width={"100%"}
@@ -116,18 +146,19 @@ export const Home = () => {
                     <CiMoneyBill />
                         <div className="middle">
                             <div className="left">
-                                <h3>Total Budget for month: </h3>
-                                <h1>{budgetNumber}</h1>
+                                <h3>Percent of Budget Spent for Month: </h3>
+                                <h1>{budgetTotal}</h1>
                             </div>
                             <div className="debt-chart">
                                 {/* Insert chart of bugdet to see how far off from cap it is */}
                                 <Chart
                                     chartType="Gauge"
-                                    data={[["Label", "Value"], ["Current", (expensesNumber/budgetNumber)*100]]}
+                                    data={[["Label", "Value"], ["Current", (expenseTotal/budgetTotal)*100]]}
                                     options={{width: 300, height: 250,
                                                 greenFrom: 0, greenTo: 75,
                                                 yellowFrom: 75, yellowTo: 90, 
-                                                redFrom: 90, redTo: 100}}
+                                                redFrom: 90, redTo: 100,
+                                                minorTicks: 1}}
                                 />
                             </div>
                         </div>
@@ -144,53 +175,25 @@ export const Home = () => {
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Amount</th>
-                                <th>Description</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Movie Ticket</td>
-                                <td>Leisure</td>
-                                <td>$10.00</td>
-                                <td>Batman</td>
-                                <td>March 30th 2023</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Ticket</td>
-                                <td>Leisure</td>
-                                <td>$10.00</td>
-                                <td>Batman</td>
-                                <td>March 30th 2023</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Ticket</td>
-                                <td>Leisure</td>
-                                <td>$10.00</td>
-                                <td>Batman</td>
-                                <td>March 30th 2023</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Ticket</td>
-                                <td>Leisure</td>
-                                <td>$10.00</td>
-                                <td>Batman</td>
-                                <td>March 30th 2023</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Ticket</td>
-                                <td>Leisure</td>
-                                <td>$10.00</td>
-                                <td>Batman</td>
-                                <td>March 30th 2023</td>
-                            </tr>
+                            {expenseList.slice(-5).reverse().map((expense) => (
+                                <tr key={expense.id}>
+                                    <td>{expense.title}</td>
+                                    <td>{expense.category}</td>
+                                    <td>{expense.amount}</td>
+                                    <td>{format(new Date(parseInt(expense.date)), "dd/M/yyyy")}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
-                    <a href="#">Show All</a>
+                    {/* <a href="/expense">Show All</a> */}
                 </div>
             </main>
             {/* -----------------------------END OF MAIN------------------------------------------- */}
-
+{/* 
             <div className="right">
                 <div className="top">
                     <button id="menu-btn">
@@ -208,7 +211,7 @@ export const Home = () => {
                 </div>
             </div>
             {/* -----------------------------END OF TOP------------------------------------------- */}
-
+ 
 
 
         </div>
